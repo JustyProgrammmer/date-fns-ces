@@ -11,7 +11,6 @@ root="$(pwd)/$(dirname "$0")/../.."
 export PACKAGE_OUTPUT_PATH="$root/tmp/types"
 
 export PACKAGE_SKIP_BEAUTIFY=true
-export PACKAGE_SKIP_CDN=true
 
 ./scripts/build/package.sh
 

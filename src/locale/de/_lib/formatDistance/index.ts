@@ -31,8 +31,8 @@ const formatDistanceLocale: FormatDistanceLocale<FormatDistanceTokenValue> = {
   },
 
   halfAMinute: {
-    standalone: "eine halbe Minute",
-    withPreposition: "einer halben Minute",
+    standalone: "halbe Minute",
+    withPreposition: "halben Minute",
   },
 
   lessThanXMinutes: {

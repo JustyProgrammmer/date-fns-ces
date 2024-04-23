@@ -1,4 +1,3 @@
-import { constructNow } from "../constructNow/index.js";
 import { isSameMonth } from "../isSameMonth/index.js";
 
 /**
@@ -25,5 +24,5 @@ import { isSameMonth } from "../isSameMonth/index.js";
 export function isThisMonth<DateType extends Date>(
   date: DateType | number | string,
 ): boolean {
-  return isSameMonth(date, constructNow(date));
+  return isSameMonth(Date.now(), date);
 }

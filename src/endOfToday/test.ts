@@ -1,4 +1,7 @@
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
+/* eslint-env mocha */
+
+import assert from "node:assert";
+import { afterEach, beforeEach, describe, it } from "vitest";
 import sinon from "sinon";
 import { endOfToday } from "./index.js";
 
@@ -16,6 +19,9 @@ describe("endOfToday", () => {
 
   it("returns the current date with the time settled to 23:59:59.999", () => {
     const result = endOfToday();
-    expect(result).toEqual(new Date(2014, 8 /* Sep */, 25, 23, 59, 59, 999));
+    assert.deepStrictEqual(
+      result,
+      new Date(2014, 8 /* Sep */, 25, 23, 59, 59, 999),
+    );
   });
 });

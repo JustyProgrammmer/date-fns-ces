@@ -1,4 +1,3 @@
-import { constructNow } from "../constructNow/index.js";
 import type { FormatDistanceOptions } from "../formatDistance/index.js";
 import { formatDistance } from "../formatDistance/index.js";
 
@@ -94,5 +93,5 @@ export function formatDistanceToNow<DateType extends Date>(
   date: DateType | number | string,
   options?: FormatDistanceToNowOptions,
 ): string {
-  return formatDistance(date, constructNow(date), options);
+  return formatDistance(date, Date.now(), options);
 }

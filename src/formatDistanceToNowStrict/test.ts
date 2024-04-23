@@ -1,6 +1,8 @@
-import { UTCDate } from "@date-fns/utc";
+/* eslint-env mocha */
+
+import assert from "node:assert";
+import { afterEach, beforeEach, describe, it } from "vitest";
 import sinon from "sinon";
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import type { FormatDistanceFn } from "../locale/types.js";
 import { formatDistanceToNowStrict } from "./index.js";
 
@@ -20,14 +22,14 @@ describe("formatDistanceToNowStrict", () => {
         const result = formatDistanceToNowStrict(
           new Date(1986, 3, 4, 10, 32, 0),
         );
-        expect(result).toBe("0 seconds");
+        assert(result === "0 seconds");
       });
 
       it("5 seconds", () => {
         const result = formatDistanceToNowStrict(
           new Date(1986, 3, 4, 10, 32, 5),
         );
-        expect(result).toBe("5 seconds");
+        assert(result === "5 seconds");
       });
     });
   });
@@ -35,60 +37,60 @@ describe("formatDistanceToNowStrict", () => {
   describe("minutes", () => {
     it("1 minute", () => {
       const result = formatDistanceToNowStrict(new Date(1986, 3, 4, 10, 33, 0));
-      expect(result).toBe("1 minute");
+      assert(result === "1 minute");
     });
 
     it("n minutes", () => {
       const result = formatDistanceToNowStrict(new Date(1986, 3, 4, 10, 35, 0));
-      expect(result).toBe("3 minutes");
+      assert(result === "3 minutes");
     });
   });
 
   describe("hours", () => {
     it("1 hour", () => {
       const result = formatDistanceToNowStrict(new Date(1986, 3, 4, 11, 32, 0));
-      expect(result).toBe("1 hour");
+      assert(result === "1 hour");
     });
 
     it("n hours", () => {
       const result = formatDistanceToNowStrict(new Date(1986, 3, 4, 13, 32, 0));
-      expect(result).toBe("3 hours");
+      assert(result === "3 hours");
     });
   });
 
   describe("days", () => {
     it("1 day", () => {
       const result = formatDistanceToNowStrict(new Date(1986, 3, 5, 10, 32, 0));
-      expect(result).toBe("1 day");
+      assert(result === "1 day");
     });
 
     it("n days", () => {
       const result = formatDistanceToNowStrict(new Date(1986, 3, 7, 10, 32, 0));
-      expect(result).toBe("3 days");
+      assert(result === "3 days");
     });
   });
 
   describe("months", () => {
     it("1 month", () => {
       const result = formatDistanceToNowStrict(new Date(1986, 4, 4, 10, 32, 0));
-      expect(result).toBe("1 month");
+      assert(result === "1 month");
     });
 
     it("n months", () => {
       const result = formatDistanceToNowStrict(new Date(1986, 6, 4, 10, 32, 0));
-      expect(result).toBe("3 months");
+      assert(result === "3 months");
     });
   });
 
   describe("years", () => {
     it("1 year", () => {
       const result = formatDistanceToNowStrict(new Date(1987, 3, 4, 10, 32, 0));
-      expect(result).toBe("1 year");
+      assert(result === "1 year");
     });
 
     it("n years", () => {
       const result = formatDistanceToNowStrict(new Date(1991, 3, 4, 10, 32, 0));
-      expect(result).toBe("5 years");
+      assert(result === "5 years");
     });
   });
 
@@ -99,7 +101,7 @@ describe("formatDistanceToNowStrict", () => {
           new Date(1986, 3, 4, 10, 32, 0),
           { unit: "second" },
         );
-        expect(result).toBe("0 seconds");
+        assert(result === "0 seconds");
       });
 
       it("5 seconds", () => {
@@ -107,7 +109,7 @@ describe("formatDistanceToNowStrict", () => {
           new Date(1986, 3, 4, 10, 32, 5),
           { unit: "second" },
         );
-        expect(result).toBe("5 seconds");
+        assert(result === "5 seconds");
       });
 
       it("120 seconds", () => {
@@ -115,7 +117,7 @@ describe("formatDistanceToNowStrict", () => {
           new Date(1986, 3, 4, 10, 34, 0),
           { unit: "second" },
         );
-        expect(result).toBe("120 seconds");
+        assert(result === "120 seconds");
       });
     });
 
@@ -125,7 +127,7 @@ describe("formatDistanceToNowStrict", () => {
           new Date(1986, 3, 4, 10, 32, 0),
           { unit: "minute" },
         );
-        expect(result).toBe("0 minutes");
+        assert(result === "0 minutes");
       });
 
       it("5 minutes", () => {
@@ -133,7 +135,7 @@ describe("formatDistanceToNowStrict", () => {
           new Date(1986, 3, 4, 10, 37, 0),
           { unit: "minute" },
         );
-        expect(result).toBe("5 minutes");
+        assert(result === "5 minutes");
       });
 
       it("120 minutes", () => {
@@ -141,7 +143,7 @@ describe("formatDistanceToNowStrict", () => {
           new Date(1986, 3, 4, 12, 32, 0),
           { unit: "minute" },
         );
-        expect(result).toBe("120 minutes");
+        assert(result === "120 minutes");
       });
     });
 
@@ -151,7 +153,7 @@ describe("formatDistanceToNowStrict", () => {
           new Date(1986, 3, 4, 10, 32, 0),
           { unit: "hour" },
         );
-        expect(result).toBe("0 hours");
+        assert(result === "0 hours");
       });
 
       it("5 hours", () => {
@@ -159,7 +161,7 @@ describe("formatDistanceToNowStrict", () => {
           new Date(1986, 3, 4, 15, 32, 0),
           { unit: "hour" },
         );
-        expect(result).toBe("5 hours");
+        assert(result === "5 hours");
       });
 
       it("48 hours", () => {
@@ -167,7 +169,7 @@ describe("formatDistanceToNowStrict", () => {
           new Date(1986, 3, 6, 10, 32, 0),
           { unit: "hour" },
         );
-        expect(result).toBe("48 hours");
+        assert(result === "48 hours");
       });
     });
 
@@ -177,7 +179,7 @@ describe("formatDistanceToNowStrict", () => {
           new Date(1986, 3, 4, 10, 32, 0),
           { unit: "day" },
         );
-        expect(result).toBe("0 days");
+        assert(result === "0 days");
       });
 
       it("5 days", () => {
@@ -185,7 +187,7 @@ describe("formatDistanceToNowStrict", () => {
           new Date(1986, 3, 9, 10, 32, 0),
           { unit: "day" },
         );
-        expect(result).toBe("5 days");
+        assert(result === "5 days");
       });
 
       it("60 days", () => {
@@ -193,7 +195,7 @@ describe("formatDistanceToNowStrict", () => {
           new Date(1986, 5, 3, 10, 32, 0),
           { unit: "day" },
         );
-        expect(result).toBe("60 days");
+        assert(result === "60 days");
       });
     });
     describe("month", () => {
@@ -202,7 +204,7 @@ describe("formatDistanceToNowStrict", () => {
           new Date(1986, 3, 4, 10, 32, 0),
           { unit: "month" },
         );
-        expect(result).toBe("0 months");
+        assert(result === "0 months");
       });
 
       it("5 months", () => {
@@ -210,7 +212,7 @@ describe("formatDistanceToNowStrict", () => {
           new Date(1986, 7, 4, 10, 32, 0),
           { unit: "month" },
         );
-        expect(result).toBe("4 months");
+        assert(result === "4 months");
       });
 
       it("24 months", () => {
@@ -218,7 +220,7 @@ describe("formatDistanceToNowStrict", () => {
           new Date(1988, 3, 4, 10, 32, 0),
           { unit: "month" },
         );
-        expect(result).toBe("24 months");
+        assert(result === "24 months");
       });
     });
 
@@ -227,14 +229,14 @@ describe("formatDistanceToNowStrict", () => {
         const result = formatDistanceToNowStrict(
           new Date(1985, 3, 4, 10, 32, 0),
         );
-        expect(result).toBe("1 year");
+        assert(result === "1 year");
       });
 
       it("returns `2 years` - see issue 2388", () => {
         const result = formatDistanceToNowStrict(
           new Date(1984, 3, 4, 10, 32, 0),
         );
-        expect(result).toBe("2 years");
+        assert(result === "2 years");
       });
 
       it("0 years", () => {
@@ -242,7 +244,7 @@ describe("formatDistanceToNowStrict", () => {
           new Date(1986, 3, 4, 10, 32, 0),
           { unit: "year" },
         );
-        expect(result).toBe("0 years");
+        assert(result === "0 years");
       });
 
       it("5 years", () => {
@@ -250,7 +252,7 @@ describe("formatDistanceToNowStrict", () => {
           new Date(1991, 3, 4, 15, 32, 0),
           { unit: "year" },
         );
-        expect(result).toBe("5 years");
+        assert(result === "5 years");
       });
     });
   });
@@ -259,7 +261,7 @@ describe("formatDistanceToNowStrict", () => {
     const result = formatDistanceToNowStrict(
       new Date(1986, 3, 4, 11, 32, 0).getTime(),
     );
-    expect(result).toBe("1 hour");
+    assert(result === "1 hour");
   });
 
   describe("when the addSuffix option is true", () => {
@@ -270,7 +272,7 @@ describe("formatDistanceToNowStrict", () => {
           addSuffix: true,
         },
       );
-      expect(result).toBe("25 seconds ago");
+      assert(result === "25 seconds ago");
     });
 
     it("adds a future suffix", () => {
@@ -280,7 +282,7 @@ describe("formatDistanceToNowStrict", () => {
           addSuffix: true,
         },
       );
-      expect(result).toBe("in 1 hour");
+      assert(result === "in 1 hour");
     });
   });
 
@@ -289,7 +291,7 @@ describe("formatDistanceToNowStrict", () => {
       const result = formatDistanceToNowStrict(
         new Date(1986, 3, 4, 10, 33, 59),
       );
-      expect(result).toBe("2 minutes");
+      assert(result === "2 minutes");
     });
 
     it('"floor"', () => {
@@ -299,7 +301,7 @@ describe("formatDistanceToNowStrict", () => {
           roundingMethod: "floor",
         },
       );
-      expect(result).toBe("1 minute");
+      assert(result === "1 minute");
     });
 
     it('"ceil"', () => {
@@ -309,7 +311,7 @@ describe("formatDistanceToNowStrict", () => {
           roundingMethod: "ceil",
         },
       );
-      expect(result).toBe("2 minutes");
+      assert(result === "2 minutes");
     });
 
     it('"round" (down)', () => {
@@ -319,7 +321,7 @@ describe("formatDistanceToNowStrict", () => {
           roundingMethod: "round",
         },
       );
-      expect(result).toBe("1 minute");
+      assert(result === "1 minute");
     });
 
     it('"round" (up)', () => {
@@ -329,17 +331,17 @@ describe("formatDistanceToNowStrict", () => {
           roundingMethod: "round",
         },
       );
-      expect(result).toBe("2 minutes");
+      assert(result === "2 minutes");
     });
   });
 
   describe("custom locale", () => {
     it("can be passed to the function", () => {
       const localizeDistance: FormatDistanceFn = (token, count, options) => {
-        expect(token).toBe("xSeconds");
-        expect(count).toBe(15);
-        expect(options!.addSuffix).toBe(true);
-        expect(options!.comparison!).toBeLessThan(0);
+        assert(token === "xSeconds");
+        assert(count === 15);
+        assert(options!.addSuffix === true);
+        assert(options!.comparison! < 0);
         return "It works!";
       };
 
@@ -355,27 +357,21 @@ describe("formatDistanceToNowStrict", () => {
         },
       );
 
-      expect(result).toBe("It works!");
+      assert(result === "It works!");
     });
   });
 
   describe("edge cases", () => {
     it("detects unit correctly for short months", () => {
       const result = formatDistanceToNowStrict(new Date(1986, 2 /* Mar */, 7));
-      expect(result).toBe("28 days");
+      assert(result === "28 days");
     });
   });
 
   it("throws `RangeError` if the date is `Invalid Date`", () => {
-    expect(formatDistanceToNowStrict.bind(null, new Date(NaN))).toThrow(
+    assert.throws(
+      formatDistanceToNowStrict.bind(null, new Date(NaN)),
       RangeError,
     );
-  });
-
-  it("respects date extensions", () => {
-    const result = formatDistanceToNowStrict(
-      new UTCDate(+new Date(1986, 3, 4, 10, 32, 5)),
-    );
-    expect(result).toBe("5 seconds");
   });
 });

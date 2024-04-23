@@ -1,4 +1,7 @@
-import { describe, expect, it } from "vitest";
+/* eslint-env mocha */
+
+import assert from "node:assert";
+import { describe, it } from "vitest";
 import { isWithinInterval } from "./index.js";
 
 describe("isWithinInterval", () => {
@@ -7,7 +10,7 @@ describe("isWithinInterval", () => {
       start: new Date(2014, 8 /* Sep */, 1),
       end: new Date(2014, 11 /* Dec */, 31),
     });
-    expect(result).toBe(true);
+    assert(result === true);
   });
 
   it("returns true if the given date has same time as the left boundary of the interval", () => {
@@ -15,7 +18,7 @@ describe("isWithinInterval", () => {
       start: new Date(2014, 8 /* Sep */, 1),
       end: new Date(2014, 11 /* Dec */, 31),
     });
-    expect(result).toBe(true);
+    assert(result === true);
   });
 
   it("returns true if the given date has same time as the right boundary of the interval", () => {
@@ -23,7 +26,7 @@ describe("isWithinInterval", () => {
       start: new Date(2014, 8 /* Sep */, 1),
       end: new Date(2014, 11 /* Dec */, 31),
     });
-    expect(result).toBe(true);
+    assert(result === true);
   });
 
   it("returns true if the given date and the both boundaries are the same", () => {
@@ -31,7 +34,7 @@ describe("isWithinInterval", () => {
       start: new Date(2014, 11 /* Dec */, 31),
       end: new Date(2014, 11 /* Dec */, 31),
     });
-    expect(result).toBe(true);
+    assert(result === true);
   });
 
   it("returns false if the given date is outside of the interval", () => {
@@ -39,7 +42,7 @@ describe("isWithinInterval", () => {
       start: new Date(2014, 8 /* Sep */, 1),
       end: new Date(2014, 11 /* Dec */, 31),
     });
-    expect(result).toBe(false);
+    assert(result === false);
   });
 
   it("accepts a timestamp", () => {
@@ -47,7 +50,7 @@ describe("isWithinInterval", () => {
       start: new Date(2014, 8 /* Sep */, 1).getTime(),
       end: new Date(2014, 11 /* Dec */, 31).getTime(),
     });
-    expect(result).toBe(true);
+    assert(result === true);
   });
 
   it("normalizes the interval if the start date is after the end date", () => {
@@ -55,7 +58,7 @@ describe("isWithinInterval", () => {
       start: new Date(2014, 11 /* Dec */, 31),
       end: new Date(2014, 8 /* Sep */, 1),
     });
-    expect(result).toBe(true);
+    assert(result === true);
   });
 
   it("returns false if the given date is `Invalid Date`", () => {
@@ -63,7 +66,7 @@ describe("isWithinInterval", () => {
       start: new Date(2014, 8 /* Sep */, 1),
       end: new Date(2014, 11 /* Dec */, 31),
     });
-    expect(!result).toBe(true);
+    assert(!result);
   });
 
   it("returns false if the start date is `Invalid Date`", () => {
@@ -71,7 +74,7 @@ describe("isWithinInterval", () => {
       start: new Date(NaN),
       end: new Date(2014, 8 /* Sep */, 1),
     });
-    expect(!result).toBe(true);
+    assert(!result);
   });
 
   it("returns false if the end date is `Invalid Date`", () => {
@@ -79,7 +82,7 @@ describe("isWithinInterval", () => {
       start: new Date(2014, 11 /* Dec */, 31),
       end: new Date(NaN),
     });
-    expect(!result).toBe(true);
+    assert(!result);
   });
 
   it("properly sorts the dates", () => {
@@ -87,6 +90,6 @@ describe("isWithinInterval", () => {
       start: new Date(2001, 8 /* Sep */, 1),
       end: new Date(2023, 11 /* Dec */, 20),
     });
-    expect(result).toBe(true);
+    assert(result);
   });
 });

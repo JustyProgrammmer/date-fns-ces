@@ -1,4 +1,7 @@
-import { describe, expect, it } from "vitest";
+/* eslint-env mocha */
+
+import assert from "node:assert";
+import { describe, it } from "vitest";
 import { intervalToDuration } from "./index.js";
 import { addMonths } from "../addMonths/index.js";
 
@@ -8,7 +11,7 @@ describe("intervalToDuration", () => {
     const end = new Date(1968, 3, 4, 19, 5, 0);
     const result = intervalToDuration({ start, end });
 
-    expect(result).toEqual({
+    assert.deepStrictEqual(result, {
       years: 39,
       months: 2,
       days: 20,
@@ -22,7 +25,7 @@ describe("intervalToDuration", () => {
     const end = new Date(2021, 3, 2, 13, 1, 1);
     const result = intervalToDuration({ start, end });
 
-    expect(result).toEqual({
+    assert.deepStrictEqual(result, {
       years: 1,
       months: 1,
       days: 1,
@@ -37,7 +40,7 @@ describe("intervalToDuration", () => {
     const end = new Date(2020, 2, 1, 12, 0, 0);
     const result = intervalToDuration({ start, end });
 
-    expect(result).toEqual({});
+    assert.deepStrictEqual(result, {});
   });
 
   it("returns a negative duration if interval's start date is greater than its end date", () => {
@@ -47,7 +50,7 @@ describe("intervalToDuration", () => {
     };
     const result = intervalToDuration(interval);
 
-    expect(result).toEqual({ months: -1 });
+    assert.deepStrictEqual(result, { months: -1 });
   });
 
   it("returns an empty object if interval's start date invalid", () => {
@@ -57,7 +60,7 @@ describe("intervalToDuration", () => {
     };
     const result = intervalToDuration(interval);
 
-    expect(result).toEqual({});
+    assert.deepStrictEqual(result, {});
   });
 
   it("returns an empty object  if interval's end date invalid", () => {
@@ -67,55 +70,67 @@ describe("intervalToDuration", () => {
     };
     const result = intervalToDuration(interval);
 
-    expect(result).toEqual({});
+    assert.deepStrictEqual(result, {});
   });
 
   describe("edge cases", () => {
     it("returns correct duration for dates in the end of Feb - issue 2255", () => {
-      expect(intervalToDuration({
-        start: new Date(2012, 1 /* Feb */, 28, 9, 0, 0),
-        end: new Date(2012, 1 /* Feb */, 29, 10, 0, 0),
-      })).toEqual({
-        days: 1,
-        hours: 1,
-      });
+      assert.deepStrictEqual(
+        intervalToDuration({
+          start: new Date(2012, 1 /* Feb */, 28, 9, 0, 0),
+          end: new Date(2012, 1 /* Feb */, 29, 10, 0, 0),
+        }),
+        {
+          days: 1,
+          hours: 1,
+        },
+      );
 
-      expect(intervalToDuration({
-        start: new Date(2012, 1 /* Feb */, 29, 9, 0, 0),
-        end: new Date(2012, 1 /* Feb */, 29, 10, 0, 0),
-      })).toEqual({
-        hours: 1,
-      });
+      assert.deepStrictEqual(
+        intervalToDuration({
+          start: new Date(2012, 1 /* Feb */, 29, 9, 0, 0),
+          end: new Date(2012, 1 /* Feb */, 29, 10, 0, 0),
+        }),
+        {
+          hours: 1,
+        },
+      );
 
-      expect(intervalToDuration({
-        start: new Date(2012, 1 /* Feb */, 28, 9, 0, 0),
-        end: new Date(2012, 1 /* Feb */, 28, 10, 0, 0),
-      })).toEqual({
-        hours: 1,
-      });
+      assert.deepStrictEqual(
+        intervalToDuration({
+          start: new Date(2012, 1 /* Feb */, 28, 9, 0, 0),
+          end: new Date(2012, 1 /* Feb */, 28, 10, 0, 0),
+        }),
+        {
+          hours: 1,
+        },
+      );
 
       // Issue 2261
-      expect(intervalToDuration({
-        start: new Date(2021, 1 /* Feb */, 28, 7, 23, 7),
-        end: new Date(2021, 1 /* Feb */, 28, 7, 38, 18),
-      })).toEqual({
-        minutes: 15,
-        seconds: 11,
-      });
+      assert.deepStrictEqual(
+        intervalToDuration({
+          start: new Date(2021, 1 /* Feb */, 28, 7, 23, 7),
+          end: new Date(2021, 1 /* Feb */, 28, 7, 38, 18),
+        }),
+        {
+          minutes: 15,
+          seconds: 11,
+        },
+      );
     });
 
     it("returns correct duration for end of month start dates - issue 2611", () => {
       const start = new Date(2021, 7, 31);
       const end = addMonths(start, 1);
 
-      expect(end).toEqual(new Date(2021, 8, 30));
+      assert.deepStrictEqual(end, new Date(2021, 8, 30));
 
       const duration = intervalToDuration({ start, end });
       const expectedDuration = {
         months: 1,
       };
 
-      expect(duration).toEqual(expectedDuration);
+      assert.deepStrictEqual(duration, expectedDuration);
     });
 
     it("returns correct duration for Feb 29 on leap year + 1 month - issue 1778", () => {
@@ -127,7 +142,7 @@ describe("intervalToDuration", () => {
         months: 1,
       };
 
-      expect(duration).toEqual(expectedDuration);
+      assert.deepStrictEqual(duration, expectedDuration);
     });
 
     it("returns correct duration for Feb 28 to Apr 30 interval - issue 2910", () => {
@@ -140,7 +155,7 @@ describe("intervalToDuration", () => {
         days: 2,
       };
 
-      expect(duration).toEqual(expectedDuration);
+      assert.deepStrictEqual(duration, expectedDuration);
     });
 
     describe("issue 2470", () => {
@@ -154,7 +169,7 @@ describe("intervalToDuration", () => {
           days: 3,
         };
 
-        expect(duration).toEqual(expectedDuration);
+        assert.deepStrictEqual(duration, expectedDuration);
       });
 
       it("returns correct duration for Feb 28 to Aug 30 interval", () => {
@@ -167,7 +182,7 @@ describe("intervalToDuration", () => {
           days: 2,
         };
 
-        expect(duration).toEqual(expectedDuration);
+        assert.deepStrictEqual(duration, expectedDuration);
       });
 
       it("returns correct duration for Feb 28 to Aug 29 interval", () => {
@@ -180,7 +195,7 @@ describe("intervalToDuration", () => {
           days: 1,
         };
 
-        expect(duration).toEqual(expectedDuration);
+        assert.deepStrictEqual(duration, expectedDuration);
       });
 
       it("returns correct duration for Feb 28 to Aug 28 interval", () => {
@@ -192,7 +207,7 @@ describe("intervalToDuration", () => {
           months: 6,
         };
 
-        expect(duration).toEqual(expectedDuration);
+        assert.deepStrictEqual(duration, expectedDuration);
       });
 
       it("returns correct duration for Feb 28 to Aug 27 interval", () => {
@@ -207,7 +222,7 @@ describe("intervalToDuration", () => {
           days: 30,
         };
 
-        expect(duration).toEqual(expectedDuration);
+        assert.deepStrictEqual(duration, expectedDuration);
       });
 
       it("returns correct duration for Apr 30 to May 31 interval", () => {
@@ -220,7 +235,7 @@ describe("intervalToDuration", () => {
           days: 1,
         };
 
-        expect(duration).toEqual(expectedDuration);
+        assert.deepStrictEqual(duration, expectedDuration);
       });
     });
   });

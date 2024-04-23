@@ -1,4 +1,7 @@
-import { describe, expect, it } from "vitest";
+/* eslint-env mocha */
+
+import assert from "node:assert";
+import { describe, it } from "vitest";
 import { isBefore } from "./index.js";
 
 describe("isBefore", () => {
@@ -7,7 +10,7 @@ describe("isBefore", () => {
       new Date(1987, 1 /* Feb */, 11),
       new Date(1989, 6 /* Jul */, 10),
     );
-    expect(result).toBe(true);
+    assert(result === true);
   });
 
   it("returns false if the first date is after the second one", () => {
@@ -15,7 +18,7 @@ describe("isBefore", () => {
       new Date(1989, 6 /* Jul */, 10),
       new Date(1987, 1 /* Feb */, 11),
     );
-    expect(result).toBe(false);
+    assert(result === false);
   });
 
   it("returns false if the first date is equal to the second one", () => {
@@ -23,7 +26,7 @@ describe("isBefore", () => {
       new Date(1989, 6 /* Jul */, 10),
       new Date(1989, 6 /* Jul */, 10),
     );
-    expect(result).toBe(false);
+    assert(result === false);
   });
 
   it("accepts a timestamp", () => {
@@ -31,21 +34,21 @@ describe("isBefore", () => {
       new Date(1987, 1 /* Feb */, 11).getTime(),
       new Date(1989, 6 /* Jul */, 10).getTime(),
     );
-    expect(result).toBe(true);
+    assert(result === true);
   });
 
   it("returns false if the first date is `Invalid Date`", () => {
     const result = isBefore(new Date(NaN), new Date(1989, 6 /* Jul */, 10));
-    expect(result).toBe(false);
+    assert(result === false);
   });
 
   it("returns false if the second date is `Invalid Date`", () => {
     const result = isBefore(new Date(1987, 1 /* Feb */, 11), new Date(NaN));
-    expect(result).toBe(false);
+    assert(result === false);
   });
 
   it("returns false if the both dates are `Invalid Date`", () => {
     const result = isBefore(new Date(NaN), new Date(NaN));
-    expect(result).toBe(false);
+    assert(result === false);
   });
 });

@@ -1,11 +1,14 @@
+/* eslint-env mocha */
+
+import assert from "node:assert";
 import {
   afterEach,
   beforeEach,
   describe,
   expect,
   it,
-  type SpyInstance,
   vi,
+  type SpyInstance,
 } from "vitest";
 import sinon from "sinon";
 import type { FormatPart } from "../types.js";
@@ -44,33 +47,39 @@ describe("format", () => {
 
   it("accepts a timestamp", () => {
     const date = new Date(2014, 3, 4).getTime();
-    expect(format(date, "yyyy-MM-dd")).toBe("2014-04-04");
+    assert(format(date, "yyyy-MM-dd") === "2014-04-04");
   });
 
   it("escapes characters between the single quote characters", () => {
     const result = format(date, "'yyyy-'MM-dd'THH:mm:ss.SSSX' yyyy-'MM-dd'");
-    expect(result).toBe("yyyy-04-04THH:mm:ss.SSSX 1986-MM-dd");
+    assert(result === "yyyy-04-04THH:mm:ss.SSSX 1986-MM-dd");
   });
 
   it('two single quote characters are transformed into a "real" single quote', () => {
     const date = new Date(2014, 3, 4, 5);
-    expect(format(date, "''h 'o''clock'''")).toBe("'5 o'clock'");
+    assert(format(date, "''h 'o''clock'''") === "'5 o'clock'");
   });
 
   it("accepts new line charactor", () => {
     const date = new Date(2014, 3, 4, 5);
-    expect(format(date, "yyyy-MM-dd'\n'HH:mm:ss")).toBe("2014-04-04\n05:00:00");
+    assert.strictEqual(
+      format(date, "yyyy-MM-dd'\n'HH:mm:ss"),
+      "2014-04-04\n05:00:00",
+    );
   });
 
   it("alias formatDate has same behavior as format", () => {
     const date = new Date(2014, 3, 4, 5);
-    expect(formatDate(date, "yyyy-MM-dd'\n'HH:mm:ss")).toBe(format(date, "yyyy-MM-dd'\n'HH:mm:ss"));
+    assert.strictEqual(
+      formatDate(date, "yyyy-MM-dd'\n'HH:mm:ss"),
+      format(date, "yyyy-MM-dd'\n'HH:mm:ss"),
+    );
   });
 
   describe("ordinal numbers", () => {
     it("ordinal day of an ordinal month", () => {
       const result = format(date, "do 'day of the' Mo 'month of' yyyy");
-      expect(result).toBe("4th day of the 4th month of 1986");
+      assert(result === "4th day of the 4th month of 1986");
     });
 
     it("should return a correct ordinal number", () => {
@@ -111,25 +120,25 @@ describe("format", () => {
         "30th",
         "31st",
       ];
-      expect(result).toEqual(expected);
+      assert.deepStrictEqual(result, expected);
     });
   });
 
   it("era", () => {
     const result = format(date, "G GG GGG GGGG GGGGG");
-    expect(result).toBe("AD AD AD Anno Domini A");
+    assert(result === "AD AD AD Anno Domini A");
 
     const bcDate = new Date();
     bcDate.setFullYear(-1, 0 /* Jan */, 1);
     const bcResult = format(bcDate, "G GG GGG GGGG GGGGG");
-    expect(bcResult).toBe("BC BC BC Before Christ B");
+    assert(bcResult === "BC BC BC Before Christ B");
   });
 
   describe("year", () => {
     describe("regular year", () => {
       it("works as expected", () => {
         const result = format(date, "y yo yy yyy yyyy yyyyy");
-        expect(result).toBe("1986 1986th 86 1986 1986 01986");
+        assert(result === "1986 1986th 86 1986 1986 01986");
       });
 
       it("1 BC formats as 1", () => {
@@ -137,7 +146,7 @@ describe("format", () => {
         date.setFullYear(0, 0 /* Jan */, 1);
         date.setHours(0, 0, 0, 0);
         const result = format(date, "y");
-        expect(result).toBe("1");
+        assert(result === "1");
       });
 
       it("2 BC formats as 2", () => {
@@ -145,7 +154,7 @@ describe("format", () => {
         date.setFullYear(-1, 0 /* Jan */, 1);
         date.setHours(0, 0, 0, 0);
         const result = format(date, "y");
-        expect(result).toBe("2");
+        assert(result === "2");
       });
 
       it("2 BC formats as 2nd", () => {
@@ -153,7 +162,7 @@ describe("format", () => {
         date.setFullYear(-1, 0 /* Jan */, 1);
         date.setHours(0, 0, 0, 0);
         const result = format(date, "yo");
-        expect(result).toBe("2nd");
+        assert(result === "2nd");
       });
     });
 
@@ -162,14 +171,14 @@ describe("format", () => {
         const result = format(date, "Y Yo YY YYY YYYY YYYYY", {
           useAdditionalWeekYearTokens: true,
         });
-        expect(result).toBe("1986 1986th 86 1986 1986 01986");
+        assert(result === "1986 1986th 86 1986 1986 01986");
       });
 
       it("the first week of the next year", () => {
         const result = format(new Date(2013, 11 /* Dec */, 29), "YYYY", {
           useAdditionalWeekYearTokens: true,
         });
-        expect(result).toBe("2014");
+        assert(result === "2014");
       });
 
       it("allows to specify `weekStartsOn` and `firstWeekContainsDate` in options", () => {
@@ -178,14 +187,14 @@ describe("format", () => {
           firstWeekContainsDate: 4,
           useAdditionalWeekYearTokens: true,
         });
-        expect(result).toBe("2013");
+        assert(result === "2013");
       });
 
       it("the first week of year", () => {
         const result = format(new Date(2016, 0 /* Jan */, 1), "YYYY", {
           useAdditionalWeekYearTokens: true,
         });
-        expect(result).toBe("2016");
+        assert(result === "2016");
       });
 
       it("1 BC formats as 1", () => {
@@ -193,7 +202,7 @@ describe("format", () => {
         date.setFullYear(0, 6 /* Jul */, 2);
         date.setHours(0, 0, 0, 0);
         const result = format(date, "Y");
-        expect(result).toBe("1");
+        assert(result === "1");
       });
 
       it("2 BC formats as 2", () => {
@@ -201,24 +210,24 @@ describe("format", () => {
         date.setFullYear(-1, 6 /* Jul */, 2);
         date.setHours(0, 0, 0, 0);
         const result = format(date, "Y");
-        expect(result).toBe("2");
+        assert(result === "2");
       });
     });
 
     describe("ISO week-numbering year", () => {
       it("works as expected", () => {
         const result = format(date, "R RR RRR RRRR RRRRR");
-        expect(result).toBe("1986 1986 1986 1986 01986");
+        assert(result === "1986 1986 1986 1986 01986");
       });
 
       it("the first week of the next year", () => {
         const result = format(new Date(2013, 11 /* Dec */, 30), "RRRR");
-        expect(result).toBe("2014");
+        assert(result === "2014");
       });
 
       it("the last week of the previous year", () => {
         const result = format(new Date(2016, 0 /* Jan */, 1), "RRRR");
-        expect(result).toBe("2015");
+        assert(result === "2015");
       });
 
       it("1 BC formats as 0", () => {
@@ -226,7 +235,7 @@ describe("format", () => {
         date.setFullYear(0, 6 /* Jul */, 2);
         date.setHours(0, 0, 0, 0);
         const result = format(date, "R");
-        expect(result).toBe("0");
+        assert(result === "0");
       });
 
       it("2 BC formats as -1", () => {
@@ -234,14 +243,14 @@ describe("format", () => {
         date.setFullYear(-1, 6 /* Jul */, 2);
         date.setHours(0, 0, 0, 0);
         const result = format(date, "R");
-        expect(result).toBe("-1");
+        assert(result === "-1");
       });
     });
 
     describe("extended year", () => {
       it("works as expected", () => {
         const result = format(date, "u uu uuu uuuu uuuuu");
-        expect(result).toBe("1986 1986 1986 1986 01986");
+        assert(result === "1986 1986 1986 1986 01986");
       });
 
       it("1 BC formats as 0", () => {
@@ -249,7 +258,7 @@ describe("format", () => {
         date.setFullYear(0, 0, 1);
         date.setHours(0, 0, 0, 0);
         const result = format(date, "u");
-        expect(result).toBe("0");
+        assert(result === "0");
       });
 
       it("2 BC formats as -1", () => {
@@ -257,7 +266,7 @@ describe("format", () => {
         date.setFullYear(-1, 0, 1);
         date.setHours(0, 0, 0, 0);
         const result = format(date, "u");
-        expect(result).toBe("-1");
+        assert(result === "-1");
       });
     });
   });
@@ -265,12 +274,12 @@ describe("format", () => {
   describe("quarter", () => {
     it("formatting quarter", () => {
       const result = format(date, "Q Qo QQ QQQ QQQQ QQQQQ");
-      expect(result).toBe("2 2nd 02 Q2 2nd quarter 2");
+      assert(result === "2 2nd 02 Q2 2nd quarter 2");
     });
 
     it("stand-alone quarter", () => {
       const result = format(date, "q qo qq qqq qqqq qqqqq");
-      expect(result).toBe("2 2nd 02 Q2 2nd quarter 2");
+      assert(result === "2 2nd 02 Q2 2nd quarter 2");
     });
 
     it("returns a correct quarter for each month", () => {
@@ -292,19 +301,19 @@ describe("format", () => {
         "4",
         "4",
       ];
-      expect(result).toEqual(expected);
+      assert.deepStrictEqual(result, expected);
     });
   });
 
   describe("month", () => {
     it("formatting month", () => {
       const result = format(date, "M Mo MM MMM MMMM MMMMM");
-      expect(result).toBe("4 4th 04 Apr April A");
+      assert(result === "4 4th 04 Apr April A");
     });
 
     it("stand-alone month", () => {
       const result = format(date, "L Lo LL LLL LLLL LLLLL");
-      expect(result).toBe("4 4th 04 Apr April A");
+      assert(result === "4 4th 04 Apr April A");
     });
   });
 
@@ -313,7 +322,7 @@ describe("format", () => {
       it("works as expected", () => {
         const date = new Date(1986, 3 /* Apr */, 6);
         const result = format(date, "w wo ww");
-        expect(result).toBe("15 15th 15");
+        assert(result === "15 15th 15");
       });
 
       it("allows to specify `weekStartsOn` and `firstWeekContainsDate` in options", () => {
@@ -322,21 +331,21 @@ describe("format", () => {
           weekStartsOn: 1,
           firstWeekContainsDate: 4,
         });
-        expect(result).toBe("14 14th 14");
+        assert(result === "14 14th 14");
       });
     });
 
     it("ISO week of year", () => {
       const date = new Date(1986, 3 /* Apr */, 6);
       const result = format(date, "I Io II");
-      expect(result).toBe("14 14th 14");
+      assert(result === "14 14th 14");
     });
   });
 
   describe("day", () => {
     it("date", () => {
       const result = format(date, "d do dd");
-      expect(result).toBe("4 4th 04");
+      assert(result === "4 4th 04");
     });
 
     describe("day of year", () => {
@@ -344,7 +353,7 @@ describe("format", () => {
         const result = format(date, "D Do DD DDD DDDDD", {
           useAdditionalDayOfYearTokens: true,
         });
-        expect(result).toBe("94 94th 94 094 00094");
+        assert(result === "94 94th 94 094 00094");
       });
 
       it("returns a correct day number for the last day of a leap year", () => {
@@ -353,7 +362,7 @@ describe("format", () => {
           "D",
           { useAdditionalDayOfYearTokens: true },
         );
-        expect(result).toBe("366");
+        assert(result === "366");
       });
     });
   });
@@ -362,14 +371,14 @@ describe("format", () => {
     describe("day of week", () => {
       it("works as expected", () => {
         const result = format(date, "E EE EEE EEEE EEEEE EEEEEE");
-        expect(result).toBe("Fri Fri Fri Friday F Fr");
+        assert(result === "Fri Fri Fri Friday F Fr");
       });
     });
 
     describe("ISO day of week", () => {
       it("works as expected", () => {
         const result = format(date, "i io ii iii iiii iiiii iiiiii");
-        expect(result).toBe("5 5th 05 Fri Friday F Fr");
+        assert(result === "5 5th 05 Fri Friday F Fr");
       });
 
       it("returns a correct day of an ISO week", () => {
@@ -378,14 +387,14 @@ describe("format", () => {
           result.push(format(new Date(1986, 8 /* Sep */, i), "i"));
         }
         const expected = ["1", "2", "3", "4", "5", "6", "7"];
-        expect(result).toEqual(expected);
+        assert.deepStrictEqual(result, expected);
       });
     });
 
     describe("formatting day of week", () => {
       it("works as expected", () => {
         const result = format(date, "e eo ee eee eeee eeeee eeeeee");
-        expect(result).toBe("6 6th 06 Fri Friday F Fr");
+        assert(result === "6 6th 06 Fri Friday F Fr");
       });
 
       it("by default, 1 is Sunday, 2 is Monday, ...", () => {
@@ -394,7 +403,7 @@ describe("format", () => {
           result.push(format(new Date(1986, 8 /* Sep */, i), "e"));
         }
         const expected = ["1", "2", "3", "4", "5", "6", "7"];
-        expect(result).toEqual(expected);
+        assert.deepStrictEqual(result, expected);
       });
 
       it("allows to specify which day is the first day of the week", () => {
@@ -405,14 +414,14 @@ describe("format", () => {
           );
         }
         const expected = ["1", "2", "3", "4", "5", "6", "7"];
-        expect(result).toEqual(expected);
+        assert.deepStrictEqual(result, expected);
       });
     });
 
     describe("stand-alone day of week", () => {
       it("works as expected", () => {
         const result = format(date, "c co cc ccc cccc ccccc cccccc");
-        expect(result).toBe("6 6th 06 Fri Friday F Fr");
+        assert(result === "6 6th 06 Fri Friday F Fr");
       });
 
       it("by default, 1 is Sunday, 2 is Monday, ...", () => {
@@ -421,7 +430,7 @@ describe("format", () => {
           result.push(format(new Date(1986, 8 /* Sep */, i), "c"));
         }
         const expected = ["1", "2", "3", "4", "5", "6", "7"];
-        expect(result).toEqual(expected);
+        assert.deepStrictEqual(result, expected);
       });
 
       it("allows to specify which day is the first day of the week", () => {
@@ -432,7 +441,7 @@ describe("format", () => {
           );
         }
         const expected = ["1", "2", "3", "4", "5", "6", "7"];
-        expect(result).toEqual(expected);
+        assert.deepStrictEqual(result, expected);
       });
     });
   });
@@ -443,7 +452,7 @@ describe("format", () => {
         new Date(2018, 0 /* Jan */, 1, 0, 0, 0, 0),
         "h ho hh",
       );
-      expect(result).toBe("12 12th 12");
+      assert(result === "12 12th 12");
     });
 
     it("hour [0-23]", () => {
@@ -451,7 +460,7 @@ describe("format", () => {
         new Date(2018, 0 /* Jan */, 1, 0, 0, 0, 0),
         "H Ho HH",
       );
-      expect(result).toBe("0 0th 00");
+      assert(result === "0 0th 00");
     });
 
     it("hour [0-11]", () => {
@@ -459,7 +468,7 @@ describe("format", () => {
         new Date(2018, 0 /* Jan */, 1, 0, 0, 0, 0),
         "K Ko KK",
       );
-      expect(result).toBe("0 0th 00");
+      assert(result === "0 0th 00");
     });
 
     it("hour [1-24]", () => {
@@ -467,7 +476,7 @@ describe("format", () => {
         new Date(2018, 0 /* Jan */, 1, 0, 0, 0, 0),
         "k ko kk",
       );
-      expect(result).toBe("24 24th 24");
+      assert(result === "24 24th 24");
     });
 
     describe("AM, PM", () => {
@@ -476,17 +485,17 @@ describe("format", () => {
           new Date(2018, 0 /* Jan */, 1, 0, 0, 0, 0),
           "a aa aaa aaaa aaaaa",
         );
-        expect(result).toBe("AM AM am a.m. a");
+        assert(result === "AM AM am a.m. a");
       });
 
       it("12 PM", () => {
         const date = new Date(1986, 3 /* Apr */, 4, 12, 0, 0, 900);
-        expect(format(date, "h H K k a")).toBe("12 12 0 12 PM");
+        assert(format(date, "h H K k a") === "12 12 0 12 PM");
       });
 
       it("12 AM", () => {
         const date = new Date(1986, 3 /* Apr */, 6, 0, 0, 0, 900);
-        expect(format(date, "h H K k a")).toBe("12 0 0 24 AM");
+        assert(format(date, "h H K k a") === "12 0 0 24 AM");
       });
     });
 
@@ -496,70 +505,74 @@ describe("format", () => {
           new Date(1986, 3 /* Apr */, 6, 2, 0, 0, 900),
           "b bb bbb bbbb bbbbb",
         );
-        expect(result).toBe("AM AM am a.m. a");
+        assert(result === "AM AM am a.m. a");
 
         const pmResult = format(
           new Date(1986, 3 /* Apr */, 6, 13, 0, 0, 900),
           "b bb bbb bbbb bbbbb",
         );
-        expect(pmResult).toBe("PM PM pm p.m. p");
+        assert(pmResult === "PM PM pm p.m. p");
       });
 
       it("12 PM", () => {
         const date = new Date(1986, 3 /* Apr */, 4, 12, 0, 0, 900);
-        expect(format(date, "b bb bbb bbbb bbbbb")).toBe("noon noon noon noon n");
+        assert(format(date, "b bb bbb bbbb bbbbb") === "noon noon noon noon n");
       });
 
       it("12 AM", () => {
         const date = new Date(1986, 3 /* Apr */, 6, 0, 0, 0, 900);
-        expect(format(date, "b bb bbb bbbb bbbbb")).toBe("midnight midnight midnight midnight mi");
+        assert(
+          format(date, "b bb bbb bbbb bbbbb") ===
+            "midnight midnight midnight midnight mi",
+        );
       });
     });
 
     describe("flexible day periods", () => {
       it("works as expected", () => {
         const result = format(date, "B, BB, BBB, BBBB, BBBBB");
-        expect(result).toBe(
-          "in the morning, in the morning, in the morning, in the morning, in the morning"
+        assert(
+          result ===
+            "in the morning, in the morning, in the morning, in the morning, in the morning",
         );
       });
 
       it("12 PM", () => {
         const date = new Date(1986, 3 /* Apr */, 4, 12, 0, 0, 900);
-        expect(format(date, "h B")).toBe("12 in the afternoon");
+        assert(format(date, "h B") === "12 in the afternoon");
       });
 
       it("5 PM", () => {
         const date = new Date(1986, 3 /* Apr */, 6, 17, 0, 0, 900);
-        expect(format(date, "h B")).toBe("5 in the evening");
+        assert(format(date, "h B") === "5 in the evening");
       });
 
       it("12 AM", () => {
         const date = new Date(1986, 3 /* Apr */, 6, 0, 0, 0, 900);
-        expect(format(date, "h B")).toBe("12 at night");
+        assert(format(date, "h B") === "12 at night");
       });
 
       it("4 AM", () => {
         const date = new Date(1986, 3 /* Apr */, 6, 4, 0, 0, 900);
-        expect(format(date, "h B")).toBe("4 in the morning");
+        assert(format(date, "h B") === "4 in the morning");
       });
     });
   });
 
   it("minute", () => {
     const result = format(date, "m mo mm");
-    expect(result).toBe("32 32nd 32");
+    assert(result === "32 32nd 32");
   });
 
   describe("second", () => {
     it("second", () => {
       const result = format(date, "s so ss");
-      expect(result).toBe("55 55th 55");
+      assert(result === "55 55th 55");
     });
 
     it("fractional seconds", () => {
       const result = format(date, "S SS SSS SSSS");
-      expect(result).toBe("1 12 123 1230");
+      assert(result === "1 12 123 1230");
     });
   });
 
@@ -573,7 +586,7 @@ describe("format", () => {
         timezoneWithZShort,
         timezoneWithZ,
       ].join(" ");
-      expect(result).toBe(expectedResult);
+      assert(result === expectedResult);
 
       const getTimezoneOffsetStub = sinon.stub(
         Date.prototype,
@@ -581,15 +594,15 @@ describe("format", () => {
       );
       getTimezoneOffsetStub.returns(0);
       const resultZeroOffset = format(date, "X XX XXX XXXX XXXXX");
-      expect(resultZeroOffset).toBe("Z Z Z Z Z");
+      assert(resultZeroOffset === "Z Z Z Z Z");
 
       getTimezoneOffsetStub.returns(480);
       const resultNegativeOffset = format(date, "X XX XXX XXXX XXXXX");
-      expect(resultNegativeOffset).toBe("-08 -0800 -08:00 -0800 -08:00");
+      assert(resultNegativeOffset === "-08 -0800 -08:00 -0800 -08:00");
 
       getTimezoneOffsetStub.returns(450);
       const resultNegative30Offset = format(date, "X XX XXX XXXX XXXXX");
-      expect(resultNegative30Offset).toBe("-0730 -0730 -07:30 -0730 -07:30");
+      assert(resultNegative30Offset === "-0730 -0730 -07:30 -0730 -07:30");
 
       getTimezoneOffsetStub.restore();
     });
@@ -603,7 +616,7 @@ describe("format", () => {
         timezoneShort,
         timezone,
       ].join(" ");
-      expect(result).toBe(expectedResult);
+      assert(result === expectedResult);
     });
 
     it("GMT", () => {
@@ -614,7 +627,7 @@ describe("format", () => {
         timezoneGMTShort,
         timezoneGMT,
       ].join(" ");
-      expect(result).toBe(expectedResult);
+      assert(result === expectedResult);
 
       const getTimezoneOffsetStub = sinon.stub(
         Date.prototype,
@@ -622,11 +635,11 @@ describe("format", () => {
       );
       getTimezoneOffsetStub.returns(480);
       const resultNegativeOffset = format(date, "O OO OOO OOOO");
-      expect(resultNegativeOffset).toBe("GMT-8 GMT-8 GMT-8 GMT-08:00");
+      assert(resultNegativeOffset === "GMT-8 GMT-8 GMT-8 GMT-08:00");
 
       getTimezoneOffsetStub.returns(450);
       const resultNegative30Offset = format(date, "O OO OOO OOOO");
-      expect(resultNegative30Offset).toBe("GMT-7:30 GMT-7:30 GMT-7:30 GMT-07:30");
+      assert(resultNegative30Offset === "GMT-7:30 GMT-7:30 GMT-7:30 GMT-07:30");
 
       getTimezoneOffsetStub.restore();
     });
@@ -639,19 +652,19 @@ describe("format", () => {
         timezoneGMTShort,
         timezoneGMT,
       ].join(" ");
-      expect(result).toBe(expectedResult);
+      assert(result === expectedResult);
     });
   });
 
   describe("timestamp", () => {
     it("seconds timestamp", () => {
       const result = format(date, "t");
-      expect(result).toBe(secondsTimestamp);
+      assert(result === secondsTimestamp);
     });
 
     it("milliseconds timestamp", () => {
       const result = format(date, "T");
-      expect(result).toBe(timestamp);
+      assert(result === timestamp);
     });
 
     it("seconds timestamp handles negative numbers", () => {
@@ -663,80 +676,85 @@ describe("format", () => {
   describe("long format", () => {
     it("short date", () => {
       const result = format(date, "P");
-      expect(result).toBe("04/04/1986");
+      assert(result === "04/04/1986");
     });
 
     it("medium date", () => {
       const result = format(date, "PP");
-      expect(result).toBe("Apr 4, 1986");
+      assert(result === "Apr 4, 1986");
     });
 
     it("long date", () => {
       const result = format(date, "PPP");
-      expect(result).toBe("April 4th, 1986");
+      assert(result === "April 4th, 1986");
     });
 
     it("full date", () => {
       const result = format(date, "PPPP");
-      expect(result).toBe("Friday, April 4th, 1986");
+      assert(result === "Friday, April 4th, 1986");
     });
 
     it("short time", () => {
       const result = format(date, "p");
-      expect(result).toBe("10:32 AM");
+      assert(result === "10:32 AM");
     });
 
     it("medium time", () => {
       const result = format(date, "pp");
-      expect(result).toBe("10:32:55 AM");
+      assert(result === "10:32:55 AM");
     });
 
     it("long time", () => {
       const result = format(date, "ppp");
-      expect(result).toBe("10:32:55 AM " + timezoneGMTShort);
+      assert(result === "10:32:55 AM " + timezoneGMTShort);
     });
 
     it("full time", () => {
       const result = format(date, "pppp");
-      expect(result).toBe("10:32:55 AM " + timezoneGMT);
+      assert(result === "10:32:55 AM " + timezoneGMT);
     });
 
     it("short date + time", () => {
       const result = format(date, "Pp");
-      expect(result).toBe("04/04/1986, 10:32 AM");
+      assert(result === "04/04/1986, 10:32 AM");
     });
 
     it("medium date + time", () => {
       const result = format(date, "PPpp");
-      expect(result).toBe("Apr 4, 1986, 10:32:55 AM");
+      assert(result === "Apr 4, 1986, 10:32:55 AM");
     });
 
     it("long date + time", () => {
       const result = format(date, "PPPppp");
-      expect(result).toBe("April 4th, 1986 at 10:32:55 AM " + timezoneGMTShort);
+      assert(result === "April 4th, 1986 at 10:32:55 AM " + timezoneGMTShort);
     });
 
     it("full date + time", () => {
       const result = format(date, "PPPPpppp");
-      expect(result).toBe("Friday, April 4th, 1986 at 10:32:55 AM " + timezoneGMT);
+      assert(
+        result === "Friday, April 4th, 1986 at 10:32:55 AM " + timezoneGMT,
+      );
     });
 
     it("allows arbitrary combination of date and time", () => {
       const result = format(date, "Ppppp");
-      expect(result).toBe("04/04/1986, 10:32:55 AM " + timezoneGMT);
+      assert(result === "04/04/1986, 10:32:55 AM " + timezoneGMT);
     });
   });
 
   describe("edge cases", () => {
     it("throws RangeError if the time value is invalid", () => {
-      expect(format.bind(null, new Date(NaN), "MMMM d, yyyy")).toThrow(RangeError);
+      assert.throws(
+        format.bind(null, new Date(NaN), "MMMM d, yyyy"),
+        RangeError,
+      );
     });
 
     it("handles dates before 100 AD", () => {
       const initialDate = new Date(0);
       initialDate.setFullYear(7, 11 /* Dec */, 31);
       initialDate.setHours(0, 0, 0, 0);
-      expect(format(initialDate, "Y ww i")).toBe("8 01 1");
+      assert(format(initialDate, "Y ww i") === "8 01 1");
     });
   });
 
@@ -758,7 +776,7 @@ describe("format", () => {
         // @ts-expect-error - It's ok to have incomplete locale
         locale: customLocale,
       });
-      expect(result).toBe("It works!");
+      assert(result === "It works!");
     });
 
     it("allows a localize preprocessor", () => {
@@ -795,7 +813,7 @@ describe("format", () => {
   });
 
   it("throws RangeError exception if the format string contains an unescaped latin alphabet character", () => {
-    expect(format.bind(null, date, "yyyy-MM-dd-nnnn")).toThrow(RangeError);
+    assert.throws(format.bind(null, date, "yyyy-MM-dd-nnnn"), RangeError);
   });
 
   describe("useAdditionalWeekYearTokens and useAdditionalDayOfYearTokens options", () => {
@@ -807,7 +825,7 @@ describe("format", () => {
       const result = format(date, "yyyy-MM-D", {
         useAdditionalDayOfYearTokens: true,
       });
-      expect(result).toEqual("1986-04-94");
+      assert.deepStrictEqual(result, "1986-04-94");
     });
 
     it("throws an error if DD token is used", () => {
@@ -820,7 +838,7 @@ describe("format", () => {
       const result = format(date, "yyyy-MM-DD", {
         useAdditionalDayOfYearTokens: true,
       });
-      expect(result).toEqual("1986-04-94");
+      assert.deepStrictEqual(result, "1986-04-94");
     });
 
     it("throws an error if YY token is used", () => {
@@ -833,7 +851,7 @@ describe("format", () => {
       const result = format(date, "YY-MM-dd", {
         useAdditionalWeekYearTokens: true,
       });
-      expect(result).toEqual("86-04-04");
+      assert.deepStrictEqual(result, "86-04-04");
     });
 
     it("throws an error if YYYY token is used", () => {
@@ -846,7 +864,7 @@ describe("format", () => {
       const result = format(date, "YYYY-MM-dd", {
         useAdditionalWeekYearTokens: true,
       });
-      expect(result).toEqual("1986-04-04");
+      assert.deepStrictEqual(result, "1986-04-04");
     });
 
     describe("console.warn", () => {

@@ -1,4 +1,7 @@
-import { describe, expect, it } from "vitest";
+/* eslint-env mocha */
+
+import assert from "node:assert";
+import { describe, it } from "vitest";
 import { intlFormat } from "./index.js";
 
 // Before Node version 13.0.0, only the locale data for en-US is available by default.
@@ -30,7 +33,7 @@ describe("intlFormat", () => {
           locale: getOperationSystemLocale(),
         });
 
-        expect(result).toBe(localeResult);
+        assert(result === localeResult);
       },
     );
 
@@ -52,7 +55,7 @@ describe("intlFormat", () => {
         locale: getOperationSystemLocale(),
       });
 
-      expect(result).toBe(localeResult);
+      assert(result === localeResult);
     });
 
     fullICUOnly("should work with only locale's options", () => {
@@ -64,7 +67,7 @@ describe("intlFormat", () => {
 
       const result = intlFormat(date, localeOptions);
 
-      expect(result).toBe("2019. 10. 4.");
+      assert(result === "2019. 10. 4.");
     });
 
     fullICUOnly(
@@ -83,12 +86,12 @@ describe("intlFormat", () => {
 
         const result = intlFormat(date, formatOptions, localeOptions);
 
-        expect(result).toBe("Freitag, 4. Oktober 2019");
+        assert(result === "Freitag, 4. Oktober 2019");
       },
     );
   });
 
   it("throws RangeError if the date value is invalid", () => {
-    expect(() => intlFormat(new Date(NaN))).toThrow(RangeError);
+    assert.throws(() => intlFormat(new Date(NaN)), RangeError);
   });
 });

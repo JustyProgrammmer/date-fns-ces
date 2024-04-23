@@ -1,4 +1,3 @@
-import { constructNow } from "../constructNow/index.js";
 import { isSameSecond } from "../isSameSecond/index.js";
 
 /**
@@ -25,5 +24,5 @@ import { isSameSecond } from "../isSameSecond/index.js";
 export function isThisSecond<DateType extends Date>(
   date: DateType | number | string,
 ): boolean {
-  return isSameSecond(date, constructNow(date));
+  return isSameSecond(Date.now(), date);
 }

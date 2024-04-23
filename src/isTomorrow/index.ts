@@ -1,5 +1,4 @@
 import { addDays } from "../addDays/index.js";
-import { constructNow } from "../constructNow/index.js";
 import { isSameDay } from "../isSameDay/index.js";
 
 /**
@@ -25,5 +24,5 @@ import { isSameDay } from "../isSameDay/index.js";
 export function isTomorrow<DateType extends Date>(
   date: DateType | number | string,
 ): boolean {
-  return isSameDay(date, addDays(constructNow(date), 1));
+  return isSameDay(date, addDays(Date.now(), 1));
 }

@@ -1,4 +1,7 @@
-import { describe, expect, it } from "vitest";
+/* eslint-env mocha */
+
+import assert from "node:assert";
+import { describe, it } from "vitest";
 import { intlFormatDistance } from "./index.js";
 
 describe("intlFormatDistance", () => {
@@ -9,7 +12,7 @@ describe("intlFormatDistance", () => {
           new Date(1986, 3, 5, 10, 30, 0),
           new Date(1986, 3, 5, 10, 30, 0),
         );
-        expect(result).toBe("now");
+        assert(result === "now");
       });
     });
 
@@ -19,7 +22,7 @@ describe("intlFormatDistance", () => {
           new Date(1986, 3, 5, 10, 30, 1),
           new Date(1986, 3, 5, 10, 30, 0),
         );
-        expect(result).toBe("in 1 second");
+        assert(result === "in 1 second");
       });
 
       it("works with past", () => {
@@ -27,7 +30,7 @@ describe("intlFormatDistance", () => {
           new Date(1986, 3, 5, 10, 30, 0),
           new Date(1986, 3, 5, 10, 30, 1),
         );
-        expect(result).toBe("1 second ago");
+        assert(result === "1 second ago");
       });
     });
 
@@ -37,7 +40,7 @@ describe("intlFormatDistance", () => {
           new Date(1986, 3, 5, 10, 30, 59),
           new Date(1986, 3, 5, 10, 30, 0),
         );
-        expect(result).toBe("in 59 seconds");
+        assert(result === "in 59 seconds");
       });
 
       it("works with past", () => {
@@ -45,7 +48,7 @@ describe("intlFormatDistance", () => {
           new Date(1986, 3, 5, 10, 30, 0),
           new Date(1986, 3, 5, 10, 30, 59),
         );
-        expect(result).toBe("59 seconds ago");
+        assert(result === "59 seconds ago");
       });
     });
 
@@ -55,7 +58,7 @@ describe("intlFormatDistance", () => {
           new Date(1986, 3, 5, 10, 30, 59),
           new Date(1986, 3, 5, 10, 29, 59),
         );
-        expect(result).toBe("in 1 minute");
+        assert(result === "in 1 minute");
       });
 
       it("works with future with over a minute", () => {
@@ -63,7 +66,7 @@ describe("intlFormatDistance", () => {
           new Date(1986, 3, 5, 10, 30),
           new Date(1986, 3, 5, 10, 28, 10),
         );
-        expect(result).toBe("in 1 minute");
+        assert(result === "in 1 minute");
       });
 
       it("works with past", () => {
@@ -71,7 +74,7 @@ describe("intlFormatDistance", () => {
           new Date(1986, 3, 5, 10, 29, 59),
           new Date(1986, 3, 5, 10, 30, 59),
         );
-        expect(result).toBe("1 minute ago");
+        assert(result === "1 minute ago");
       });
 
       it("works with past with over a minute", () => {
@@ -79,7 +82,7 @@ describe("intlFormatDistance", () => {
           new Date(1986, 3, 5, 10, 28, 10),
           new Date(1986, 3, 5, 10, 30),
         );
-        expect(result).toBe("1 minute ago");
+        assert(result === "1 minute ago");
       });
     });
 
@@ -89,7 +92,7 @@ describe("intlFormatDistance", () => {
           new Date(1986, 3, 5, 10, 30),
           new Date(1986, 3, 5, 10, 28),
         );
-        expect(result).toBe("in 2 minutes");
+        assert(result === "in 2 minutes");
       });
 
       it("works with past", () => {
@@ -97,7 +100,7 @@ describe("intlFormatDistance", () => {
           new Date(1986, 3, 5, 10, 28),
           new Date(1986, 3, 5, 10, 30),
         );
-        expect(result).toBe("2 minutes ago");
+        assert(result === "2 minutes ago");
       });
     });
 
@@ -107,7 +110,7 @@ describe("intlFormatDistance", () => {
           new Date(1986, 3, 4, 11, 30, 0),
           new Date(1986, 3, 4, 10, 30, 0),
         );
-        expect(result).toBe("in 1 hour");
+        assert(result === "in 1 hour");
       });
 
       it("works with past", () => {
@@ -115,7 +118,7 @@ describe("intlFormatDistance", () => {
           new Date(1986, 3, 4, 10, 30, 0),
           new Date(1986, 3, 4, 11, 30, 0),
         );
-        expect(result).toBe("1 hour ago");
+        assert(result === "1 hour ago");
       });
     });
 
@@ -125,7 +128,7 @@ describe("intlFormatDistance", () => {
           new Date(1986, 3, 5, 10),
           new Date(1986, 3, 5, 9),
         );
-        expect(result).toBe("in 1 hour");
+        assert(result === "in 1 hour");
       });
 
       it("works with future", () => {
@@ -133,7 +136,7 @@ describe("intlFormatDistance", () => {
           new Date(1986, 3, 5, 10, 30),
           new Date(1986, 3, 5, 9),
         );
-        expect(result).toBe("in 1 hour");
+        assert(result === "in 1 hour");
       });
 
       it("works with past", () => {
@@ -141,7 +144,7 @@ describe("intlFormatDistance", () => {
           new Date(1986, 3, 5, 9),
           new Date(1986, 3, 5, 10),
         );
-        expect(result).toBe("1 hour ago");
+        assert(result === "1 hour ago");
       });
 
       it("works with past with over an hour", () => {
@@ -149,7 +152,7 @@ describe("intlFormatDistance", () => {
           new Date(1986, 3, 5, 9),
           new Date(1986, 3, 5, 10, 30),
         );
-        expect(result).toBe("1 hour ago");
+        assert(result === "1 hour ago");
       });
     });
 
@@ -159,7 +162,7 @@ describe("intlFormatDistance", () => {
           new Date(1986, 3, 5, 10),
           new Date(1986, 3, 5, 8),
         );
-        expect(result).toBe("in 2 hours");
+        assert(result === "in 2 hours");
       });
 
       it("works with future with extra minutes", () => {
@@ -167,7 +170,7 @@ describe("intlFormatDistance", () => {
           new Date(1986, 3, 5, 10, 30),
           new Date(1986, 3, 5, 8),
         );
-        expect(result).toBe("in 2 hours");
+        assert(result === "in 2 hours");
       });
 
       it("works with past", () => {
@@ -175,7 +178,7 @@ describe("intlFormatDistance", () => {
           new Date(1986, 3, 5, 8),
           new Date(1986, 3, 5, 10),
         );
-        expect(result).toBe("2 hours ago");
+        assert(result === "2 hours ago");
       });
 
       it("works with past with extra minutes", () => {
@@ -183,7 +186,7 @@ describe("intlFormatDistance", () => {
           new Date(1986, 3, 5, 8),
           new Date(1986, 3, 5, 10),
         );
-        expect(result).toBe("2 hours ago");
+        assert(result === "2 hours ago");
       });
     });
 
@@ -193,7 +196,7 @@ describe("intlFormatDistance", () => {
           new Date(1986, 3, 6, 22),
           new Date(1986, 3, 5, 22),
         );
-        expect(result).toBe("tomorrow");
+        assert(result === "tomorrow");
       });
 
       it("works with past", () => {
@@ -201,7 +204,7 @@ describe("intlFormatDistance", () => {
           new Date(1986, 3, 5, 22),
           new Date(1986, 3, 6, 22),
         );
-        expect(result).toBe("yesterday");
+        assert(result === "yesterday");
       });
 
       it("works with past with an extra hour", () => {
@@ -209,7 +212,7 @@ describe("intlFormatDistance", () => {
           new Date(1986, 3, 5, 22),
           new Date(1986, 3, 6, 22, 5),
         );
-        expect(result).toBe("yesterday");
+        assert(result === "yesterday");
       });
     });
 
@@ -219,7 +222,7 @@ describe("intlFormatDistance", () => {
           new Date(1986, 3, 6, 22),
           new Date(1986, 3, 4, 22),
         );
-        expect(result).toBe("in 2 days");
+        assert(result === "in 2 days");
       });
 
       it("works with past", () => {
@@ -227,7 +230,7 @@ describe("intlFormatDistance", () => {
           new Date(1986, 3, 4, 22),
           new Date(1986, 3, 6, 22),
         );
-        expect(result).toBe("2 days ago");
+        assert(result === "2 days ago");
       });
     });
 
@@ -237,7 +240,7 @@ describe("intlFormatDistance", () => {
           new Date(1986, 3, 10, 22),
           new Date(1986, 3, 3, 22),
         );
-        expect(result).toBe("next week");
+        assert(result === "next week");
       });
 
       it("works with future with more than a week", () => {
@@ -245,7 +248,7 @@ describe("intlFormatDistance", () => {
           new Date(1986, 3, 11, 22),
           new Date(1986, 3, 3, 22),
         );
-        expect(result).toBe("next week");
+        assert(result === "next week");
       });
 
       it("works with past", () => {
@@ -253,7 +256,7 @@ describe("intlFormatDistance", () => {
           new Date(1986, 3, 3, 22),
           new Date(1986, 3, 10, 22),
         );
-        expect(result).toBe("last week");
+        assert(result === "last week");
       });
 
       it("works with past with more than a week", () => {
@@ -261,7 +264,7 @@ describe("intlFormatDistance", () => {
           new Date(1986, 3, 3, 22),
           new Date(1986, 3, 11, 22),
         );
-        expect(result).toBe("last week");
+        assert(result === "last week");
       });
     });
 
@@ -271,7 +274,7 @@ describe("intlFormatDistance", () => {
           new Date(1986, 3, 15),
           new Date(1986, 3, 1),
         );
-        expect(result).toBe("in 2 weeks");
+        assert(result === "in 2 weeks");
       });
 
       it("works with future with more than 2 weeks", () => {
@@ -279,7 +282,7 @@ describe("intlFormatDistance", () => {
           new Date(1986, 3, 17),
           new Date(1986, 3, 1),
         );
-        expect(result).toBe("in 2 weeks");
+        assert(result === "in 2 weeks");
       });
 
       it("works with past", () => {
@@ -287,7 +290,7 @@ describe("intlFormatDistance", () => {
           new Date(1986, 3, 1),
           new Date(1986, 3, 15),
         );
-        expect(result).toBe("2 weeks ago");
+        assert(result === "2 weeks ago");
       });
 
       it("works with past with more than 2 weeks", () => {
@@ -295,7 +298,7 @@ describe("intlFormatDistance", () => {
           new Date(1986, 3, 1),
           new Date(1986, 3, 17),
         );
-        expect(result).toBe("2 weeks ago");
+        assert(result === "2 weeks ago");
       });
     });
 
@@ -305,7 +308,7 @@ describe("intlFormatDistance", () => {
           new Date(1986, 4, 2),
           new Date(1986, 3, 1),
         );
-        expect(result).toBe("next month");
+        assert(result === "next month");
       });
 
       it("works with future with more than a month", () => {
@@ -313,7 +316,7 @@ describe("intlFormatDistance", () => {
           new Date(1986, 4, 22),
           new Date(1986, 3, 1),
         );
-        expect(result).toBe("next month");
+        assert(result === "next month");
       });
 
       it("works with past", () => {
@@ -321,7 +324,7 @@ describe("intlFormatDistance", () => {
           new Date(1986, 3, 1),
           new Date(1986, 4, 2),
         );
-        expect(result).toBe("last month");
+        assert(result === "last month");
       });
 
       it("works with past with more than a month", () => {
@@ -329,7 +332,7 @@ describe("intlFormatDistance", () => {
           new Date(1986, 3, 1),
           new Date(1986, 4, 22),
         );
-        expect(result).toBe("last month");
+        assert(result === "last month");
       });
     });
 
@@ -339,7 +342,7 @@ describe("intlFormatDistance", () => {
           new Date(1986, 5, 2),
           new Date(1986, 1, 1),
         );
-        expect(result).toBe("next quarter");
+        assert(result === "next quarter");
       });
 
       it("works with future with more than a quarter", () => {
@@ -347,7 +350,7 @@ describe("intlFormatDistance", () => {
           new Date(1986, 5, 22),
           new Date(1986, 1, 1),
         );
-        expect(result).toBe("next quarter");
+        assert(result === "next quarter");
       });
 
       it("works with past", () => {
@@ -355,7 +358,7 @@ describe("intlFormatDistance", () => {
           new Date(1986, 1, 1),
           new Date(1986, 5, 2),
         );
-        expect(result).toBe("last quarter");
+        assert(result === "last quarter");
       });
 
       it("works with past with more than a quarter", () => {
@@ -363,7 +366,7 @@ describe("intlFormatDistance", () => {
           new Date(1986, 1, 1),
           new Date(1986, 5, 22),
         );
-        expect(result).toBe("last quarter");
+        assert(result === "last quarter");
       });
     });
 
@@ -373,7 +376,7 @@ describe("intlFormatDistance", () => {
           new Date(1986, 6, 2),
           new Date(1986, 1, 1),
         );
-        expect(result).toBe("in 2 quarters");
+        assert(result === "in 2 quarters");
       });
 
       it("works with future with more that X quarters", () => {
@@ -381,7 +384,7 @@ describe("intlFormatDistance", () => {
           new Date(1986, 6, 22),
           new Date(1986, 1, 1),
         );
-        expect(result).toBe("in 2 quarters");
+        assert(result === "in 2 quarters");
       });
 
       it("works with past", () => {
@@ -389,7 +392,7 @@ describe("intlFormatDistance", () => {
           new Date(1986, 1, 1),
           new Date(1986, 6, 2),
         );
-        expect(result).toBe("2 quarters ago");
+        assert(result === "2 quarters ago");
       });
 
       it("works with past with more that X quarters", () => {
@@ -397,7 +400,7 @@ describe("intlFormatDistance", () => {
           new Date(1986, 1, 1),
           new Date(1986, 6, 22),
         );
-        expect(result).toBe("2 quarters ago");
+        assert(result === "2 quarters ago");
       });
     });
 
@@ -407,7 +410,7 @@ describe("intlFormatDistance", () => {
           new Date(1987, 1, 2),
           new Date(1986, 1, 1),
         );
-        expect(result).toBe("next year");
+        assert(result === "next year");
       });
 
       it("works with future with more that a year", () => {
@@ -415,7 +418,7 @@ describe("intlFormatDistance", () => {
           new Date(1987, 10, 2),
           new Date(1986, 1, 1),
         );
-        expect(result).toBe("next year");
+        assert(result === "next year");
       });
 
       it("works with past", () => {
@@ -423,7 +426,7 @@ describe("intlFormatDistance", () => {
           new Date(1986, 1, 1),
           new Date(1987, 1, 2),
         );
-        expect(result).toBe("last year");
+        assert(result === "last year");
       });
 
       it("works with past with more than a year", () => {
@@ -431,7 +434,7 @@ describe("intlFormatDistance", () => {
           new Date(1986, 1, 1),
           new Date(1987, 10, 2),
         );
-        expect(result).toBe("last year");
+        assert(result === "last year");
       });
     });
 
@@ -441,7 +444,7 @@ describe("intlFormatDistance", () => {
           new Date(1988, 1, 1),
           new Date(1986, 1, 1),
         );
-        expect(result).toBe("in 2 years");
+        assert(result === "in 2 years");
       });
 
       it("works with future with x years", () => {
@@ -449,7 +452,7 @@ describe("intlFormatDistance", () => {
           new Date(2088, 1, 1),
           new Date(1986, 1, 1),
         );
-        expect(result).toBe("in 102 years");
+        assert(result === "in 102 years");
       });
 
       it("works with past", () => {
@@ -457,7 +460,7 @@ describe("intlFormatDistance", () => {
           new Date(1986, 1, 1),
           new Date(1988, 1, 1),
         );
-        expect(result).toBe("2 years ago");
+        assert(result === "2 years ago");
       });
 
       it("works with past with x years", () => {
@@ -465,7 +468,7 @@ describe("intlFormatDistance", () => {
           new Date(1988, 1, 1),
           new Date(2086, 1, 1),
         );
-        expect(result).toBe("98 years ago");
+        assert(result === "98 years ago");
       });
     });
   });
@@ -479,7 +482,7 @@ describe("intlFormatDistance", () => {
             new Date(1987, 3, 4, 10, 30, 0),
             { unit: "second" },
           );
-          expect(result).toBe("in 90 seconds");
+          assert(result === "in 90 seconds");
         });
 
         it("works with past with seconds", () => {
@@ -488,7 +491,7 @@ describe("intlFormatDistance", () => {
             new Date(1987, 3, 4, 10, 31, 30),
             { unit: "second" },
           );
-          expect(result).toBe("90 seconds ago");
+          assert(result === "90 seconds ago");
         });
 
         it("works with future with quarters", () => {
@@ -497,7 +500,7 @@ describe("intlFormatDistance", () => {
             new Date(1986, 3, 4, 10, 30, 0),
             { unit: "quarter" },
           );
-          expect(result).toBe("in 5 quarters");
+          assert(result === "in 5 quarters");
         });
       });
 
@@ -508,7 +511,7 @@ describe("intlFormatDistance", () => {
             new Date(1986, 3, 4, 10, 30, 0),
             { unit: "minute" },
           );
-          expect(result).toBe("in 60 minutes");
+          assert(result === "in 60 minutes");
         });
 
         it("works with the past", () => {
@@ -517,7 +520,7 @@ describe("intlFormatDistance", () => {
             new Date(1986, 3, 4, 11, 30, 0),
             { unit: "minute" },
           );
-          expect(result).toBe("60 minutes ago");
+          assert(result === "60 minutes ago");
         });
       });
 
@@ -529,7 +532,7 @@ describe("intlFormatDistance", () => {
 
             { unit: "hour" },
           );
-          expect(result).toBe("in 1 hour");
+          assert(result === "in 1 hour");
         });
 
         it("works with the past", () => {
@@ -539,7 +542,7 @@ describe("intlFormatDistance", () => {
 
             { unit: "hour" },
           );
-          expect(result).toBe("1 hour ago");
+          assert(result === "1 hour ago");
         });
       });
 
@@ -550,7 +553,7 @@ describe("intlFormatDistance", () => {
             new Date(1987, 3, 4, 10, 30, 0),
             { unit: "day" },
           );
-          expect(result).toBe("today");
+          assert(result === "today");
         });
 
         it("works with the past", () => {
@@ -558,7 +561,7 @@ describe("intlFormatDistance", () => {
             new Date(1986, 3, 5, 10, 30, 0),
             new Date(1986, 3, 4, 10, 30, 0),
           );
-          expect(result).toBe("tomorrow");
+          assert(result === "tomorrow");
         });
       });
 
@@ -569,7 +572,7 @@ describe("intlFormatDistance", () => {
             new Date(1986, 3, 4, 10, 30, 0),
             { unit: "day" },
           );
-          expect(result).toBe("in 366 days");
+          assert(result === "in 366 days");
         });
 
         it("works with the past", () => {
@@ -579,7 +582,7 @@ describe("intlFormatDistance", () => {
 
             { unit: "day" },
           );
-          expect(result).toBe("366 days ago");
+          assert(result === "366 days ago");
         });
       });
 
@@ -590,7 +593,7 @@ describe("intlFormatDistance", () => {
             new Date(1987, 3, 4, 10, 30, 0),
             { unit: "week" },
           );
-          expect(result).toBe("next week");
+          assert(result === "next week");
         });
 
         it("works with the past", () => {
@@ -599,7 +602,7 @@ describe("intlFormatDistance", () => {
             new Date(1987, 3, 11, 10, 30, 0),
             { unit: "week" },
           );
-          expect(result).toBe("last week");
+          assert(result === "last week");
         });
       });
 
@@ -610,7 +613,7 @@ describe("intlFormatDistance", () => {
             new Date(1986, 3, 4, 10, 30, 0),
             { unit: "week" },
           );
-          expect(result).toBe("in 53 weeks");
+          assert(result === "in 53 weeks");
         });
 
         it("works with the past", () => {
@@ -620,7 +623,7 @@ describe("intlFormatDistance", () => {
 
             { unit: "week" },
           );
-          expect(result).toBe("53 weeks ago");
+          assert(result === "53 weeks ago");
         });
       });
     });
@@ -633,7 +636,7 @@ describe("intlFormatDistance", () => {
             new Date(1986, 3, 10, 22),
             { numeric: "always" },
           );
-          expect(result).toBe("1 week ago");
+          assert(result === "1 week ago");
         });
 
         it("works with future", () => {
@@ -642,7 +645,7 @@ describe("intlFormatDistance", () => {
             new Date(1986, 3, 3, 22),
             { numeric: "always" },
           );
-          expect(result).toBe("in 1 week");
+          assert(result === "in 1 week");
         });
       });
 
@@ -652,7 +655,7 @@ describe("intlFormatDistance", () => {
           new Date(1986, 3, 4, 10, 30, 0),
           { numeric: "always" },
         );
-        expect(result).toBe("in 1 day");
+        assert(result === "in 1 day");
       });
 
       it("works with the same dates", () => {
@@ -661,7 +664,7 @@ describe("intlFormatDistance", () => {
           new Date(1986, 3, 5, 10, 30, 0),
           { numeric: "auto" },
         );
-        expect(result).toBe("now");
+        assert(result === "now");
       });
     });
 
@@ -673,7 +676,7 @@ describe("intlFormatDistance", () => {
             new Date(1985, 4, 4, 10, 30, 0),
             { locale: "es" },
           );
-          expect(result).toBe("el próximo año");
+          assert(result === "el próximo año");
         });
       });
     });
@@ -685,7 +688,7 @@ describe("intlFormatDistance", () => {
           new Date(1985, 4, 4, 10, 30, 0),
           { style: "long" },
         );
-        expect(result).toBe("next year");
+        assert(result === "next year");
       });
     });
 
@@ -696,7 +699,7 @@ describe("intlFormatDistance", () => {
           new Date(1986, 3, 5, 10, 30, 0),
           { unit: "minute", locale: "de" },
         );
-        expect(result).toBe("in 60 Minuten");
+        assert(result === "in 60 Minuten");
       });
     });
 
@@ -707,7 +710,7 @@ describe("intlFormatDistance", () => {
           new Date(1985, 4, 4, 10, 30, 0),
           { style: "long", numeric: "auto" },
         );
-        expect(result).toBe("tomorrow");
+        assert(result === "tomorrow");
       });
 
       it("handles dates before 100 AD", () => {
@@ -716,78 +719,102 @@ describe("intlFormatDistance", () => {
           new Date(1, 3, 4, 10, 30, 0),
           { unit: "minute" },
         );
-        expect(result).toBe("in 60 minutes");
+        assert(result === "in 60 minutes");
       });
     });
 
     describe("errors", () => {
       it("checks the first date", () => {
-        expect(intlFormatDistance.bind(
-          null,
-          new Date(NaN),
-          new Date(1986, 3, 4, 10, 30, 0),
-        )).toThrow(RangeError);
+        assert.throws(
+          intlFormatDistance.bind(
+            null,
+            new Date(NaN),
+            new Date(1986, 3, 4, 10, 30, 0),
+          ),
+          RangeError,
+        );
       });
 
       it("checks the second date", () => {
-        expect(intlFormatDistance.bind(
-          null,
-          new Date(1986, 3, 4, 10, 30, 0),
-          new Date(NaN),
-        )).toThrow(RangeError);
+        assert.throws(
+          intlFormatDistance.bind(
+            null,
+            new Date(1986, 3, 4, 10, 30, 0),
+            new Date(NaN),
+          ),
+          RangeError,
+        );
       });
 
       it("checks both dates", () => {
-        expect(intlFormatDistance.bind(null, new Date(NaN), new Date(NaN))).toThrow(RangeError);
+        assert.throws(
+          intlFormatDistance.bind(null, new Date(NaN), new Date(NaN)),
+          RangeError,
+        );
       });
 
       it("checks unit", () => {
-        expect(intlFormatDistance.bind(
-          null,
-          new Date(1986, 3, 4, 10, 30, 0),
-          new Date(1986, 3, 4, 10, 30, 0),
-          // @ts-expect-error - We're testing wrong value
-          { unit: "wrongValue" },
-        )).toThrow(RangeError);
+        assert.throws(
+          intlFormatDistance.bind(
+            null,
+            new Date(1986, 3, 4, 10, 30, 0),
+            new Date(1986, 3, 4, 10, 30, 0),
+            // @ts-expect-error - We're testing wrong value
+            { unit: "wrongValue" },
+          ),
+          RangeError,
+        );
       });
 
       it("checks locale", () => {
-        expect(intlFormatDistance.bind(
-          null,
-          new Date(1986, 3, 4, 10, 30, 0),
-          new Date(1986, 3, 4, 10, 30, 0),
-          { locale: "wrongValue" },
-        )).toThrow(RangeError);
+        assert.throws(
+          intlFormatDistance.bind(
+            null,
+            new Date(1986, 3, 4, 10, 30, 0),
+            new Date(1986, 3, 4, 10, 30, 0),
+            { locale: "wrongValue" },
+          ),
+          RangeError,
+        );
       });
 
       it("checks localeMatcher", () => {
-        expect(intlFormatDistance.bind(
-          null,
-          new Date(1986, 3, 4, 10, 30, 0),
-          new Date(1986, 3, 4, 10, 30, 0),
-          // @ts-expect-error - We're testing wrong value
-          { localeMatcher: "wrongValue" },
-        )).toThrow(RangeError);
+        assert.throws(
+          intlFormatDistance.bind(
+            null,
+            new Date(1986, 3, 4, 10, 30, 0),
+            new Date(1986, 3, 4, 10, 30, 0),
+            // @ts-expect-error - We're testing wrong value
+            { localeMatcher: "wrongValue" },
+          ),
+          RangeError,
+        );
       });
 
       it("checks numeric", () => {
-        expect(intlFormatDistance.bind(
-          null,
-          new Date(1986, 3, 4, 10, 30, 0),
-          new Date(1986, 3, 4, 10, 30, 0),
-          // @ts-expect-error - We're testing wrong value
-          { numeric: "wrongValue" },
-        )).toThrow(RangeError);
+        assert.throws(
+          intlFormatDistance.bind(
+            null,
+            new Date(1986, 3, 4, 10, 30, 0),
+            new Date(1986, 3, 4, 10, 30, 0),
+            // @ts-expect-error - We're testing wrong value
+            { numeric: "wrongValue" },
+          ),
+          RangeError,
+        );
       });
 
       it("checks style", () => {
-        expect(intlFormatDistance.bind(
-          null,
-          new Date(1986, 3, 4, 10, 30, 0),
-          new Date(1986, 3, 4, 10, 30, 0),
-          // @ts-expect-error - We're testing wrong value
-          { style: "wrongValue" },
-        )).toThrow(RangeError);
+        assert.throws(
+          intlFormatDistance.bind(
+            null,
+            new Date(1986, 3, 4, 10, 30, 0),
+            new Date(1986, 3, 4, 10, 30, 0),
+            // @ts-expect-error - We're testing wrong value
+            { style: "wrongValue" },
+          ),
+          RangeError,
+        );
       });
     });
   });

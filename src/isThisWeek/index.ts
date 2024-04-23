@@ -1,4 +1,3 @@
-import { constructNow } from "../constructNow/index.js";
 import { isSameWeek } from "../isSameWeek/index.js";
 import type { LocalizedOptions, WeekOptions } from "../types.js";
 
@@ -40,5 +39,5 @@ export function isThisWeek<DateType extends Date>(
   date: DateType | number | string,
   options?: IsThisWeekOptions,
 ): boolean {
-  return isSameWeek(date, constructNow(date), options);
+  return isSameWeek(date, Date.now(), options);
 }

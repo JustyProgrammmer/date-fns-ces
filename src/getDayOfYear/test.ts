@@ -1,15 +1,18 @@
-import { describe, expect, it } from "vitest";
+/* eslint-env mocha */
+
+import assert from "node:assert";
+import { describe, it } from "vitest";
 import { getDayOfYear } from "./index.js";
 
 describe("getDayOfYear", () => {
   it("returns the day of the year of the given date", () => {
     const result = getDayOfYear(new Date(2014, 6 /* Jul */, 2));
-    expect(result).toBe(183);
+    assert(result === 183);
   });
 
   it("accepts a timestamp", () => {
     const result = getDayOfYear(new Date(2014, 0 /* Jan */, 2).getTime());
-    expect(result).toBe(2);
+    assert(result === 2);
   });
 
   it("handles dates before 100 AD", () => {
@@ -17,11 +20,11 @@ describe("getDayOfYear", () => {
     initialDate.setFullYear(0, 11 /* Dec */, 31);
     initialDate.setHours(0, 0, 0, 0);
     const result = getDayOfYear(initialDate);
-    expect(result).toBe(366);
+    assert(result === 366);
   });
 
   it("returns NaN if the given date is invalid", () => {
     const result = getDayOfYear(new Date(NaN));
-    expect(isNaN(result)).toBe(true);
+    assert(isNaN(result));
   });
 });

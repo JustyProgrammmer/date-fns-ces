@@ -1,12 +1,14 @@
-import { UTCDate } from "@date-fns/utc";
+/* eslint-env mocha */
+
+import assert from "node:assert";
+import { describe, it, beforeEach, afterEach } from "vitest";
 import sinon from "sinon";
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { isThisQuarter } from "./index.js";
 
 describe("isThisQuarter", () => {
   let clock: sinon.SinonFakeTimers;
   beforeEach(() => {
-    clock = sinon.useFakeTimers(new Date(2014, 6 /* Jul */, 1).getTime());
+    clock = sinon.useFakeTimers(new Date(2014, 8 /* Sep */, 25).getTime());
   });
 
   afterEach(() => {
@@ -15,22 +17,16 @@ describe("isThisQuarter", () => {
 
   it("returns true if the given date and the current date have the same quarter (and year)", () => {
     const date = new Date(2014, 6 /* Jul */, 2);
-    expect(isThisQuarter(date)).toBe(true);
+    assert(isThisQuarter(date) === true);
   });
 
   it("returns false if the given date and the current date have different quarters", () => {
     const date = new Date(2014, 1 /* Feb */, 11);
-    expect(isThisQuarter(date)).toBe(false);
+    assert(isThisQuarter(date) === false);
   });
 
   it("accepts a timestamp", () => {
     const date = new Date(2014, 6 /* Jul */, 2).getTime();
-    expect(isThisQuarter(date)).toBe(true);
-  });
-
-  it("respects date extensions", () => {
-    expect(isThisQuarter(new UTCDate(+new Date(2014, 6 /* Jul */, 1)))).toBe(
-      true,
-    );
+    assert(isThisQuarter(date) === true);
   });
 });

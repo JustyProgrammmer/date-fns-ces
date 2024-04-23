@@ -1,6 +1,8 @@
-import { UTCDate } from "@date-fns/utc";
+/* eslint-env mocha */
+
+import assert from "node:assert";
+import { describe, it, beforeEach, afterEach } from "vitest";
 import sinon from "sinon";
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { isThisMinute } from "./index.js";
 
 describe("isThisMinute", () => {
@@ -17,24 +19,16 @@ describe("isThisMinute", () => {
 
   it("returns true if the given date and the current date have the same minute", () => {
     const date = new Date(2014, 8 /* Sep */, 25, 18, 30);
-    expect(isThisMinute(date)).toBe(true);
+    assert(isThisMinute(date) === true);
   });
 
   it("returns false if the given date and the current date have different minutes", () => {
     const date = new Date(2014, 8 /* Sep */, 25, 18, 31);
-    expect(isThisMinute(date)).toBe(false);
+    assert(isThisMinute(date) === false);
   });
 
   it("accepts a timestamp", () => {
     const date = new Date(2014, 8 /* Sep */, 25, 18, 30, 30).getTime();
-    expect(isThisMinute(date)).toBe(true);
-  });
-
-  it("respects date extensions", () => {
-    expect(
-      isThisMinute(
-        new UTCDate(+new Date(2014, 8 /* Sep */, 25, 18, 30, 15, 500)),
-      ),
-    ).toBe(true);
+    assert(isThisMinute(date) === true);
   });
 });
