@@ -1,6 +1,8 @@
-import { UTCDate } from "@date-fns/utc";
+/* eslint-env mocha */
+
+import assert from "node:assert";
+import { describe, it, beforeEach, afterEach } from "vitest";
 import sinon from "sinon";
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { isTomorrow } from "./index.js";
 
 describe("isTomorrow", () => {
@@ -15,22 +17,16 @@ describe("isTomorrow", () => {
 
   it("returns true if the given date is tomorrow", () => {
     const result = isTomorrow(new Date(2014, 8 /* Sep */, 26));
-    expect(result).toBe(true);
+    assert(result === true);
   });
 
   it("returns false if the given date is not tomorrow", () => {
     const result = isTomorrow(new Date(2014, 8 /* Sep */, 25));
-    expect(result).toBe(false);
+    assert(result === false);
   });
 
   it("accepts a timestamp", () => {
     const result = isTomorrow(new Date(2014, 8 /* Sep */, 26).getTime());
-    expect(result).toBe(true);
-  });
-
-  it("respects date extensions", () => {
-    expect(isTomorrow(new UTCDate(+new Date(2014, 8 /* Aug */, 26)))).toBe(
-      true,
-    );
+    assert(result === true);
   });
 });

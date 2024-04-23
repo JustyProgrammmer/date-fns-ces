@@ -1,4 +1,7 @@
-import { describe, expect, it } from "vitest";
+/* eslint-env mocha */
+
+import assert from "node:assert";
+import { describe, it } from "vitest";
 import sinon from "sinon";
 import { endOfTomorrow } from "./index.js";
 
@@ -9,7 +12,10 @@ describe("endOfTomorrow", () => {
     );
 
     const result = endOfTomorrow();
-    expect(result).toEqual(new Date(2014, 8 /* Sep */, 26, 23, 59, 59, 999));
+    assert.deepStrictEqual(
+      result,
+      new Date(2014, 8 /* Sep */, 26, 23, 59, 59, 999),
+    );
 
     clock.restore();
   });
@@ -24,7 +30,7 @@ describe("endOfTomorrow", () => {
     expectedResult.setFullYear(14, 8 /* Sep */, 26);
     expectedResult.setHours(23, 59, 59, 999);
     const result = endOfTomorrow();
-    expect(result).toEqual(expectedResult);
+    assert.deepStrictEqual(result, expectedResult);
 
     clock.restore();
   });

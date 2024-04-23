@@ -1,4 +1,7 @@
-import { describe, expect, it } from "vitest";
+/* eslint-env mocha */
+
+import assert from "node:assert";
+import { describe, it } from "vitest";
 import { differenceInWeeks } from "./index.js";
 
 describe("differenceInWeeks", () => {
@@ -7,7 +10,7 @@ describe("differenceInWeeks", () => {
       new Date(2014, 6 /* Jul */, 8, 18, 0),
       new Date(2014, 5 /* Jun */, 29, 6, 0),
     );
-    expect(result).toBe(1);
+    assert(result === 1);
   });
 
   it("returns the number of weeks between the given dates with `trunc` as default a rounding method", () => {
@@ -15,7 +18,7 @@ describe("differenceInWeeks", () => {
       new Date(2014, 5 /* Jun */, 29, 6, 0),
       new Date(2014, 6 /* Jul */, 13, 5, 0),
     );
-    expect(result).toBe(-1);
+    assert(result === -1);
   });
 
   it("returns the number of weeks between the given dates with `trunc` passed in as a rounding method", () => {
@@ -24,7 +27,7 @@ describe("differenceInWeeks", () => {
       new Date(2014, 5 /* Jun */, 29, 6, 0),
       { roundingMethod: "trunc" },
     );
-    expect(result).toBe(1);
+    assert(result === 1);
   });
 
   it("returns the number of weeks between the given dates with `ceil` passed in as a rounding method", () => {
@@ -33,7 +36,7 @@ describe("differenceInWeeks", () => {
       new Date(2014, 5 /* Jun */, 29, 6, 0),
       { roundingMethod: "ceil" },
     );
-    expect(result).toBe(2);
+    assert(result === 2);
   });
 
   it("returns the number of weeks between the given dates with `floor` passed in as a rounding method", () => {
@@ -42,7 +45,7 @@ describe("differenceInWeeks", () => {
       new Date(2014, 5 /* Jun */, 29, 6, 0),
       { roundingMethod: "floor" },
     );
-    expect(result).toBe(1);
+    assert(result === 1);
   });
 
   it("returns the number of weeks between the given dates with `round` passed in as a rounding method", () => {
@@ -51,7 +54,7 @@ describe("differenceInWeeks", () => {
       new Date(2014, 5 /* Jun */, 29, 6, 0),
       { roundingMethod: "round" },
     );
-    expect(result).toBe(2);
+    assert(result === 2);
   });
 
   it("returns a negative number if the time value of the first date is smaller", () => {
@@ -59,7 +62,7 @@ describe("differenceInWeeks", () => {
       new Date(2014, 5 /* Jun */, 29, 6, 0),
       new Date(2014, 6 /* Jul */, 8, 18, 0),
     );
-    expect(result).toBe(-1);
+    assert(result === -1);
   });
 
   it("returns a 0, not a negative 0 - issue #2555 ", () => {
@@ -67,7 +70,7 @@ describe("differenceInWeeks", () => {
       new Date(2021, 6 /* Jul */, 22, 6, 1, 28.973),
       new Date(2021, 6 /* Jul */, 22, 6, 1, 28.976),
     );
-    expect(result).toBe(0);
+    assert(result === 0);
   });
 
   it("accepts timestamps", () => {
@@ -75,7 +78,7 @@ describe("differenceInWeeks", () => {
       new Date(2014, 6 /* Jul */, 12).getTime(),
       new Date(2014, 6 /* Jul */, 2).getTime(),
     );
-    expect(result).toBe(1);
+    assert(result === 1);
   });
 
   describe("edge cases", () => {
@@ -84,7 +87,7 @@ describe("differenceInWeeks", () => {
         new Date(2014, 6 /* Jul */, 6),
         new Date(2014, 6 /* Jul */, 5),
       );
-      expect(result).toBe(0);
+      assert(result === 0);
     });
 
     it("the same for the swapped dates", () => {
@@ -92,7 +95,7 @@ describe("differenceInWeeks", () => {
         new Date(2014, 6 /* Jul */, 5),
         new Date(2014, 6 /* Jul */, 6),
       );
-      expect(result).toBe(0);
+      assert(result === 0);
     });
 
     it("days of weeks of the given dates are the same", () => {
@@ -100,7 +103,7 @@ describe("differenceInWeeks", () => {
         new Date(2014, 6 /* Jul */, 9),
         new Date(2014, 6 /* Jul */, 2),
       );
-      expect(result).toBe(1);
+      assert(result === 1);
     });
 
     it("the given dates are the same", () => {
@@ -108,7 +111,7 @@ describe("differenceInWeeks", () => {
         new Date(2014, 8 /* Sep */, 5, 0, 0),
         new Date(2014, 8 /* Sep */, 5, 0, 0),
       );
-      expect(result).toBe(0);
+      assert(result === 0);
     });
 
     it("does not return -0 when the given dates are the same", () => {
@@ -122,7 +125,7 @@ describe("differenceInWeeks", () => {
       );
 
       const resultIsNegative = isNegativeZero(result);
-      expect(resultIsNegative).toBe(false);
+      assert(resultIsNegative === false);
     });
   });
 
@@ -131,7 +134,7 @@ describe("differenceInWeeks", () => {
       new Date(NaN),
       new Date(2017, 0 /* Jan */, 1),
     );
-    expect(isNaN(result)).toBe(true);
+    assert(isNaN(result));
   });
 
   it("returns NaN if the second date is `Invalid Date`", () => {
@@ -139,11 +142,11 @@ describe("differenceInWeeks", () => {
       new Date(2017, 0 /* Jan */, 1),
       new Date(NaN),
     );
-    expect(isNaN(result)).toBe(true);
+    assert(isNaN(result));
   });
 
   it("returns NaN if the both dates are `Invalid Date`", () => {
     const result = differenceInWeeks(new Date(NaN), new Date(NaN));
-    expect(isNaN(result)).toBe(true);
+    assert(isNaN(result));
   });
 });

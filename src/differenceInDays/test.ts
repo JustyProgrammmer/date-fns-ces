@@ -1,4 +1,7 @@
-import { describe, expect, it } from "vitest";
+/* eslint-env mocha */
+
+import assert from "node:assert";
+import { describe, it } from "vitest";
 import { differenceInDays } from "./index.js";
 import { getDstTransitions } from "../../test/dst/tzOffsetTransitions.js";
 
@@ -8,7 +11,7 @@ describe("differenceInDays", () => {
       new Date(2012, 6 /* Jul */, 2, 18, 0),
       new Date(2011, 6 /* Jul */, 2, 6, 0),
     );
-    expect(result).toBe(366);
+    assert(result === 366);
   });
 
   it("returns a negative number if the time value of the first date is smaller", () => {
@@ -16,7 +19,7 @@ describe("differenceInDays", () => {
       new Date(2011, 6 /* Jul */, 2, 6, 0),
       new Date(2012, 6 /* Jul */, 2, 18, 0),
     );
-    expect(result).toBe(-366);
+    assert(result === -366);
   });
 
   it("accepts timestamps", () => {
@@ -24,7 +27,7 @@ describe("differenceInDays", () => {
       new Date(2014, 8 /* Sep */, 5, 18, 0).getTime(),
       new Date(2014, 8 /* Sep */, 4, 6, 0).getTime(),
     );
-    expect(result).toBe(1);
+    assert(result === 1);
   });
 
   describe("edge cases", () => {
@@ -33,7 +36,7 @@ describe("differenceInDays", () => {
         new Date(2014, 8 /* Sep */, 5, 0, 0),
         new Date(2014, 8 /* Sep */, 4, 23, 59),
       );
-      expect(result).toBe(0);
+      assert(result === 0);
     });
 
     it("the same for the swapped dates", () => {
@@ -41,7 +44,7 @@ describe("differenceInDays", () => {
         new Date(2014, 8 /* Sep */, 4, 23, 59),
         new Date(2014, 8 /* Sep */, 5, 0, 0),
       );
-      expect(result).toBe(0);
+      assert(result === 0);
     });
 
     it("the time values of the given dates are the same", () => {
@@ -49,7 +52,7 @@ describe("differenceInDays", () => {
         new Date(2014, 8 /* Sep */, 6, 0, 0),
         new Date(2014, 8 /* Sep */, 5, 0, 0),
       );
-      expect(result).toBe(1);
+      assert(result === 1);
     });
 
     it("the given dates are the same", () => {
@@ -57,7 +60,7 @@ describe("differenceInDays", () => {
         new Date(2014, 8 /* Sep */, 5, 0, 0),
         new Date(2014, 8 /* Sep */, 5, 0, 0),
       );
-      expect(result).toBe(0);
+      assert(result === 0);
     });
 
     const dstTransitions = getDstTransitions(2017);
@@ -79,8 +82,8 @@ describe("differenceInDays", () => {
           );
         }
 
-        expect(start).not.toBe(undefined);
-        expect(end).not.toBe(undefined);
+        assert(start !== undefined);
+        assert(end !== undefined);
 
         if (start === undefined || end === undefined) {
           return;
@@ -98,12 +101,12 @@ describe("differenceInDays", () => {
           const b = new Date(a.getTime() + 24 * HOUR - dstOffset); // 1 day later, same local time
           const c = new Date(a.getTime() + 48 * HOUR - dstOffset); // 2 days later, same local time
 
-          expect(sameTime(a, b)).toBe(true);
-          expect(sameTime(a, c)).toBe(true);
-          expect(sameTime(b, c)).toBe(true);
-          expect(differenceInDays(c, b)).toBe(1); // normal 24-hour day
-          expect(differenceInDays(b, a)).toBe(1); // 23 hours -> 1 day
-          expect(differenceInDays(c, a)).toBe(2); // 47 hours -> 2 days
+          assert(sameTime(a, b));
+          assert(sameTime(a, c));
+          assert(sameTime(b, c));
+          assert(differenceInDays(c, b) === 1); // normal 24-hour day
+          assert(differenceInDays(b, a) === 1); // 23 hours -> 1 day
+          assert(differenceInDays(c, a) === 2); // 47 hours -> 2 days
         }
         // anchor exactly, the boundary
         {
@@ -111,12 +114,12 @@ describe("differenceInDays", () => {
           const b = new Date(a.getTime() + 24 * HOUR); // 1 day later, same local time
           const c = new Date(a.getTime() + 48 * HOUR); // 2 days later, same local time
 
-          expect(sameTime(a, b)).toBe(true);
-          expect(sameTime(a, c)).toBe(true);
-          expect(sameTime(b, c)).toBe(true);
-          expect(differenceInDays(c, b)).toBe(1); // normal 24-hour day
-          expect(differenceInDays(b, a)).toBe(1); // normal 24-hour day
-          expect(differenceInDays(c, a)).toBe(2); // 2 normal 24-hour days
+          assert(sameTime(a, b));
+          assert(sameTime(a, c));
+          assert(sameTime(b, c));
+          assert(differenceInDays(c, b) === 1); // normal 24-hour day
+          assert(differenceInDays(b, a) === 1); // normal 24-hour day
+          assert(differenceInDays(c, a) === 2); // 2 normal 24-hour days
         }
 
         // TEST DST END (FALL)
@@ -128,9 +131,9 @@ describe("differenceInDays", () => {
           const b = new Date(a.getTime() + 24 * HOUR + dstOffset - 15 * MINUTE); // 1 day later, 15 mins earlier local time
           const c = new Date(a.getTime() + 48 * HOUR + dstOffset - 15 * MINUTE); // 2 days later, 15 mins earlier local time
 
-          expect(differenceInDays(c, b)).toBe(1); // normal 24-hour day
-          expect(differenceInDays(b, a)).toBe(0); // 24.75 hours -> 0 full days (because hour lost to DST)
-          expect(differenceInDays(c, a)).toBe(1); // 48.75 hours -> 1 full day (because hour lost to DST)
+          assert(differenceInDays(c, b) === 1); // normal 24-hour day
+          assert(differenceInDays(b, a) === 0); // 24.75 hours -> 0 full days (because hour lost to DST)
+          assert(differenceInDays(c, a) === 1); // 48.75 hours -> 1 full day (because hour lost to DST)
         }
         // anchor to one hour before the boundary
         {
@@ -138,12 +141,12 @@ describe("differenceInDays", () => {
           const b = new Date(a.getTime() + 24 * HOUR + dstOffset); // 1 day later, same local time
           const c = new Date(a.getTime() + 48 * HOUR + dstOffset); // 2 days later, same local time
 
-          expect(sameTime(a, b)).toBe(true);
-          expect(sameTime(a, c)).toBe(true);
-          expect(sameTime(b, c)).toBe(true);
-          expect(differenceInDays(c, b)).toBe(1); // normal 24-hour day
-          expect(differenceInDays(b, a)).toBe(1); // 25 hours -> 1 day
-          expect(differenceInDays(c, a)).toBe(2); // 49 hours -> 2 days
+          assert(sameTime(a, b));
+          assert(sameTime(a, c));
+          assert(sameTime(b, c));
+          assert(differenceInDays(c, b) === 1); // normal 24-hour day
+          assert(differenceInDays(b, a) === 1); // 25 hours -> 1 day
+          assert(differenceInDays(c, a) === 2); // 49 hours -> 2 days
         }
         // anchor to one hour after the boundary
         {
@@ -151,20 +154,20 @@ describe("differenceInDays", () => {
           const b = new Date(a.getTime() + 24 * HOUR); // 1 day later, same local time
           const c = new Date(a.getTime() + 48 * HOUR); // 2 days later, same local time
 
-          expect(sameTime(a, b)).toBe(true);
-          expect(sameTime(a, c)).toBe(true);
-          expect(sameTime(b, c)).toBe(true);
-          expect(differenceInDays(c, b)).toBe(1); // normal 24-hour day
-          expect(differenceInDays(b, a)).toBe(1); // normal 24-hour day
-          expect(differenceInDays(c, a)).toBe(2); // 2 normal 24-hour days
+          assert(sameTime(a, b));
+          assert(sameTime(a, c));
+          assert(sameTime(b, c));
+          assert(differenceInDays(c, b) === 1); // normal 24-hour day
+          assert(differenceInDays(b, a) === 1); // normal 24-hour day
+          assert(differenceInDays(c, a) === 2); // 2 normal 24-hour days
         }
         // anchor exactly at the boundary
         {
           const a = end; // exactly when Standard Time starts
           const b = new Date(a.getTime() + 24 * HOUR); // 1 day later, same local time
           const c = new Date(a.getTime() + 48 * HOUR); // 2 days later, same local time
-          expect(differenceInDays(b, a)).toBe(1); // normal 24-hour day
-          expect(differenceInDays(c, a)).toBe(2); // 2 normal 24-hour days
+          assert(differenceInDays(b, a) === 1); // normal 24-hour day
+          assert(differenceInDays(c, a) === 2); // 2 normal 24-hour days
         }
       },
     );
@@ -180,7 +183,7 @@ describe("differenceInDays", () => {
       );
 
       const resultIsNegative = isNegativeZero(result);
-      expect(resultIsNegative).toBe(false);
+      assert(resultIsNegative === false);
     });
   });
 
@@ -189,7 +192,7 @@ describe("differenceInDays", () => {
       new Date(NaN),
       new Date(2017, 0 /* Jan */, 1),
     );
-    expect(isNaN(result)).toBe(true);
+    assert(isNaN(result));
   });
 
   it("returns NaN if the second date is `Invalid Date`", () => {
@@ -197,11 +200,11 @@ describe("differenceInDays", () => {
       new Date(2017, 0 /* Jan */, 1),
       new Date(NaN),
     );
-    expect(isNaN(result)).toBe(true);
+    assert(isNaN(result));
   });
 
   it("returns NaN if the both dates are `Invalid Date`", () => {
     const result = differenceInDays(new Date(NaN), new Date(NaN));
-    expect(isNaN(result)).toBe(true);
+    assert(isNaN(result));
   });
 });

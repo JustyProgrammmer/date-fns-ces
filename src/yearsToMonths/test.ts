@@ -1,20 +1,23 @@
+/* eslint-env mocha */
+
+import assert from "node:assert";
 import { describe, expect, it } from "vitest";
 import { yearsToMonths } from "./index.js";
 
 describe("yearsToMonths", () => {
   it("converts years to months", () => {
-    expect(yearsToMonths(1)).toBe(12);
-    expect(yearsToMonths(2)).toBe(24);
+    assert(yearsToMonths(1) === 12);
+    assert(yearsToMonths(2) === 24);
   });
 
   it("uses floor rounding", () => {
-    expect(yearsToMonths(1.7)).toBe(20);
-    expect(yearsToMonths(0.1)).toBe(1);
+    assert(yearsToMonths(1.7) === 20);
+    assert(yearsToMonths(0.1) === 1);
   });
 
   it("handles border values", () => {
-    expect(yearsToMonths(1.5)).toBe(18);
-    expect(yearsToMonths(0)).toBe(0);
+    assert(yearsToMonths(1.5) === 18);
+    assert(yearsToMonths(0) === 0);
   });
 
   it("properly works with negative numbers", () => {

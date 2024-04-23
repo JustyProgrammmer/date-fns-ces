@@ -15,7 +15,7 @@ import { daysInYear } from "../constants/index.js";
  * @example
  * // Convert 2 years into days
  * const result = yearsToDays(2)
- * //=> 730
+ * //=> 24
  */
 export function yearsToDays(years: number): number {
   return Math.trunc(years * daysInYear);

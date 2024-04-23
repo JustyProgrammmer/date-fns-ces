@@ -1,28 +1,31 @@
-import { describe, expect, it } from "vitest";
+/* eslint-env mocha */
+
+import assert from "node:assert";
+import { describe, it } from "vitest";
 import { addMonths } from "./index.js";
 import { getDstTransitions } from "../../test/dst/tzOffsetTransitions.js";
 
 describe("addMonths", () => {
   it("adds the given number of months", () => {
     const result = addMonths(new Date(2014, 8 /* Sep */, 1), 5);
-    expect(result).toEqual(new Date(2015, 1 /* Feb */, 1));
+    assert.deepStrictEqual(result, new Date(2015, 1 /* Feb */, 1));
   });
 
   it("accepts a timestamp", () => {
     const result = addMonths(new Date(2014, 8 /* Sep */, 1).getTime(), 12);
-    expect(result).toEqual(new Date(2015, 8 /* Sep */, 1));
+    assert.deepStrictEqual(result, new Date(2015, 8 /* Sep */, 1));
   });
 
   it("does not mutate the original date", () => {
     const date = new Date(2014, 8 /* Sep */, 1);
     addMonths(date, 12);
-    expect(date).toEqual(new Date(2014, 8 /* Sep */, 1));
+    assert.deepStrictEqual(date, new Date(2014, 8 /* Sep */, 1));
   });
 
   it("works well if the desired month has fewer days and the provided date is in the last day of a month", () => {
     const date = new Date(2014, 11 /* Dec */, 31);
     const result = addMonths(date, 2);
-    expect(result).toEqual(new Date(2015, 1 /* Feb */, 28));
+    assert.deepStrictEqual(result, new Date(2015, 1 /* Feb */, 28));
   });
 
   it("handles dates before 100 AD", () => {
@@ -33,17 +36,17 @@ describe("addMonths", () => {
     expectedResult.setFullYear(0, 1 /* Feb */, 29);
     expectedResult.setHours(0, 0, 0, 0);
     const result = addMonths(initialDate, 1);
-    expect(result).toEqual(expectedResult);
+    assert.deepStrictEqual(result, expectedResult);
   });
 
   it("returns `Invalid Date` if the given date is invalid", () => {
     const result = addMonths(new Date(NaN), 5);
-    expect(result instanceof Date && isNaN(result.getTime())).toBe(true);
+    assert(result instanceof Date && isNaN(result.getTime()));
   });
 
   it("returns `Invalid Date` if the given amount is NaN", () => {
     const result = addMonths(new Date(2014, 8 /* Sep */, 1), NaN);
-    expect(result instanceof Date && isNaN(result.getTime())).toBe(true);
+    assert(result instanceof Date && isNaN(result.getTime()));
   });
 
   const dstTransitions = getDstTransitions(2017);
@@ -64,7 +67,10 @@ describe("addMonths", () => {
     () => {
       const date = dstTransitions.start;
       const result = addMonths(date!, 2);
-      expect(result).toEqual(override(date!, date!.getFullYear(), date!.getMonth() + 2));
+      assert.deepStrictEqual(
+        result,
+        override(date!, date!.getFullYear(), date!.getMonth() + 2),
+      );
     },
   );
 
@@ -74,7 +80,7 @@ describe("addMonths", () => {
       const date = new Date(dstTransitions.start!.getTime() - 0.5 * HOUR);
       const result = addMonths(date, 2);
       const expected = override(date, date.getFullYear(), date.getMonth() + 2);
-      expect(result).toEqual(expected);
+      assert.deepStrictEqual(result, expected);
     },
   );
 
@@ -84,7 +90,7 @@ describe("addMonths", () => {
       const date = new Date(dstTransitions.start!.getTime() - 1 * HOUR);
       const result = addMonths(date, 2);
       const expected = override(date, date.getFullYear(), date.getMonth() + 2);
-      expect(result).toEqual(expected);
+      assert.deepStrictEqual(result, expected);
     },
   );
 
@@ -93,11 +99,14 @@ describe("addMonths", () => {
     () => {
       const date = dstTransitions.end;
       const result = addMonths(date!, 2);
-      expect(result).toEqual(override(
-        date!,
-        date!.getFullYear() + (date!.getMonth() >= 10 ? 1 : 0),
-        (date!.getMonth() + 2) % 12, // protect against wrap for Nov.
-      ));
+      assert.deepStrictEqual(
+        result,
+        override(
+          date!,
+          date!.getFullYear() + (date!.getMonth() >= 10 ? 1 : 0),
+          (date!.getMonth() + 2) % 12, // protect against wrap for Nov.
+        ),
+      );
     },
   );
 
@@ -106,11 +115,14 @@ describe("addMonths", () => {
     () => {
       const date = new Date(dstTransitions.end!.getTime() - 0.5 * HOUR);
       const result = addMonths(date, 2);
-      expect(result).toEqual(override(
-        date,
-        date.getFullYear() + (date.getMonth() >= 10 ? 1 : 0),
-        (date.getMonth() + 2) % 12, // protect against wrap for Nov.
-      ));
+      assert.deepStrictEqual(
+        result,
+        override(
+          date,
+          date.getFullYear() + (date.getMonth() >= 10 ? 1 : 0),
+          (date.getMonth() + 2) % 12, // protect against wrap for Nov.
+        ),
+      );
     },
   );
 
@@ -119,11 +131,14 @@ describe("addMonths", () => {
     () => {
       const date = new Date(dstTransitions.end!.getTime() - 1 * HOUR);
       const result = addMonths(date, 2);
-      expect(result).toEqual(override(
-        date,
-        date.getFullYear() + (date.getMonth() >= 10 ? 1 : 0),
-        (date.getMonth() + 2) % 12, // protect against wrap for Nov.
-      ));
+      assert.deepStrictEqual(
+        result,
+        override(
+          date,
+          date.getFullYear() + (date.getMonth() >= 10 ? 1 : 0),
+          (date.getMonth() + 2) % 12, // protect against wrap for Nov.
+        ),
+      );
     },
   );
 
@@ -132,7 +147,7 @@ describe("addMonths", () => {
     () => {
       const date = new Date(dstTransitions.end!);
       const result = addMonths(date, 0);
-      expect(result).toEqual(date);
+      assert.deepStrictEqual(result, date);
     },
   );
 });

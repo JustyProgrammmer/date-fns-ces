@@ -1,4 +1,7 @@
-import { describe, expect, it } from "vitest";
+/* eslint-env mocha */
+
+import assert from "node:assert";
+import { describe, it } from "vitest";
 import { isSameMonth } from "./index.js";
 
 describe("isSameMonth", () => {
@@ -7,7 +10,7 @@ describe("isSameMonth", () => {
       new Date(2014, 8 /* Sep */, 2),
       new Date(2014, 8 /* Sep */, 25),
     );
-    expect(result).toBe(true);
+    assert(result === true);
   });
 
   it("returns false if the given dates have different months", () => {
@@ -15,7 +18,7 @@ describe("isSameMonth", () => {
       new Date(2014, 8 /* Sep */, 2),
       new Date(2013, 8 /* Sep */, 25),
     );
-    expect(result).toBe(false);
+    assert(result === false);
   });
 
   it("accepts a timestamp", () => {
@@ -23,21 +26,21 @@ describe("isSameMonth", () => {
       new Date(2014, 8 /* Sep */, 2).getTime(),
       new Date(2014, 8 /* Sep */, 25).getTime(),
     );
-    expect(result).toBe(true);
+    assert(result === true);
   });
 
   it("returns false if the first date is `Invalid Date`", () => {
     const result = isSameMonth(new Date(NaN), new Date(1989, 6 /* Jul */, 10));
-    expect(result).toBe(false);
+    assert(result === false);
   });
 
   it("returns false if the second date is `Invalid Date`", () => {
     const result = isSameMonth(new Date(1987, 1 /* Feb */, 11), new Date(NaN));
-    expect(result).toBe(false);
+    assert(result === false);
   });
 
   it("returns false if the both dates are `Invalid Date`", () => {
     const result = isSameMonth(new Date(NaN), new Date(NaN));
-    expect(result).toBe(false);
+    assert(result === false);
   });
 });

@@ -1,4 +1,7 @@
-import { describe, expect, it } from "vitest";
+/* eslint-env mocha */
+
+import assert from "node:assert";
+import { describe, it } from "vitest";
 import { add } from "./index.js";
 import { getDstTransitions } from "../../test/dst/tzOffsetTransitions.js";
 
@@ -13,7 +16,10 @@ describe("add", () => {
       minutes: 9,
       seconds: 30,
     });
-    expect(result).toEqual(new Date(2017, 5 /* June */, 15, 15, 29, 20));
+    assert.deepStrictEqual(
+      result,
+      new Date(2017, 5 /* June */, 15, 15, 29, 20),
+    );
   });
 
   it("supports an undefined value in the duration object", () => {
@@ -26,7 +32,10 @@ describe("add", () => {
       minutes: 9,
       seconds: 30,
     });
-    expect(result).toEqual(new Date(2015, 5 /* June */, 15, 15, 29, 20));
+    assert.deepStrictEqual(
+      result,
+      new Date(2015, 5 /* June */, 15, 15, 29, 20),
+    );
   });
 
   it("returns same date object when passed empty duration values", () => {
@@ -39,31 +48,31 @@ describe("add", () => {
       minutes: undefined,
       seconds: undefined,
     });
-    expect(result).toEqual(new Date(2014, 8 /* Sep */, 1, 10));
+    assert.deepStrictEqual(result, new Date(2014, 8 /* Sep */, 1, 10));
   });
 
   it("returns same date object when passed undefined duration values", () => {
     const result = add(new Date(2014, 8 /* Sep */, 1, 10).getTime(), {});
-    expect(result).toEqual(new Date(2014, 8 /* Sep */, 1, 10));
+    assert.deepStrictEqual(result, new Date(2014, 8 /* Sep */, 1, 10));
   });
 
   it("accepts a timestamp", () => {
     const result = add(new Date(2014, 8 /* Sep */, 1, 10).getTime(), {
       hours: 4,
     });
-    expect(result).toEqual(new Date(2014, 8 /* Sep */, 1, 14));
+    assert.deepStrictEqual(result, new Date(2014, 8 /* Sep */, 1, 14));
   });
 
   it("does not mutate the original date", () => {
     const date = new Date(2014, 8 /* Sep */, 1, 10);
     add(date, { hours: 4 });
-    expect(date).toEqual(new Date(2014, 8 /* Sep */, 1, 10));
+    assert.deepStrictEqual(date, new Date(2014, 8 /* Sep */, 1, 10));
   });
 
   it("works well if the desired month has fewer days and the provided date is in the last day of a month", () => {
     const date = new Date(2014, 11 /* Dec */, 31);
     const result = add(date, { months: 9 });
-    expect(result).toEqual(new Date(2015, 8 /* Sep */, 30));
+    assert.deepStrictEqual(result, new Date(2015, 8 /* Sep */, 30));
   });
 
   const dstTransitions = getDstTransitions(2017);
@@ -76,7 +85,7 @@ describe("add", () => {
     () => {
       const date = dstTransitions.end;
       const result = add(date!, { hours: 1 });
-      expect(result).toEqual(new Date(date!.getTime() + HOUR));
+      assert.deepStrictEqual(result, new Date(date!.getTime() + HOUR));
     },
   );
 
@@ -88,11 +97,11 @@ describe("add", () => {
     expectedResult.setFullYear(0, 1 /* Feb */, 29);
     expectedResult.setHours(0, 0, 0, 0);
     const result = add(initialDate, { months: 3 });
-    expect(result).toEqual(expectedResult);
+    assert.deepStrictEqual(result, expectedResult);
   });
 
   it("returns `Invalid Date` if the given date is invalid", () => {
     const result = add(new Date(NaN), { hours: 5 });
-    expect(result instanceof Date && isNaN(result.getTime())).toBe(true);
+    assert(result instanceof Date && isNaN(result.getTime()));
   });
 });

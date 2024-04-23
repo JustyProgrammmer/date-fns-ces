@@ -1,14 +1,17 @@
-import { describe, expect, it } from "vitest";
+/* eslint-env mocha */
+
+import assert from "node:assert";
+import { describe, it } from "vitest";
 import { secondsToMilliseconds } from "./index.js";
 
 describe("secondsToMilliseconds", () => {
   it("converts seconds to milliseconds", () => {
-    expect(secondsToMilliseconds(1)).toBe(1000);
-    expect(secondsToMilliseconds(2)).toBe(2000);
+    assert(secondsToMilliseconds(1) === 1000);
+    assert(secondsToMilliseconds(2) === 2000);
   });
 
   it("handles border values", () => {
-    expect(secondsToMilliseconds(1.5)).toBe(1500);
-    expect(secondsToMilliseconds(0)).toBe(0);
+    assert(secondsToMilliseconds(1.5) === 1500);
+    assert(secondsToMilliseconds(0) === 0);
   });
 });

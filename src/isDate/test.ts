@@ -1,14 +1,18 @@
-import { afterEach, describe, expect, it } from "vitest";
+/* eslint-env mocha */
+/* global HTMLIFrameElement */
+
+import assert from "node:assert";
+import { afterEach, describe, it } from "vitest";
 import { assertType } from "../_lib/test/index.js";
 import { isDate } from "./index.js";
 
 describe("isDate", () => {
   it("returns true if the given value is a date object", () => {
-    expect(isDate(new Date())).toBe(true);
+    assert(isDate(new Date()));
   });
 
   it("returns true if the given value is an Invalid Date", () => {
-    expect(isDate(new Date(NaN))).toBe(true);
+    assert(isDate(new Date(NaN)));
   });
 
   it("ensures that the passed argument is an instance of Date", () => {
@@ -36,7 +40,7 @@ describe("isDate", () => {
           iframe.addEventListener("load", () => {
             execScript("window.date = new Date()");
             // eslint-disable-next-line @typescript-eslint/no-explicit-any -- It's ok we're messing with iframes
-            expect(isDate((iframe.contentWindow as any).date)).toBe(true);
+            assert(isDate((iframe.contentWindow as any).date));
             resolve(void 0);
           });
           if (!document.body) throw new Error("document.body is not defined");
@@ -65,10 +69,10 @@ describe("isDate", () => {
   });
 
   it("returns false if the given value is not a date object", () => {
-    expect(!isDate(new Date().getTime())).toBe(true);
-    expect(!isDate(new Date().toISOString())).toBe(true);
-    expect(!isDate({})).toBe(true);
-    expect(!isDate(null)).toBe(true);
-    expect(!isDate(0)).toBe(true);
+    assert(!isDate(new Date().getTime()));
+    assert(!isDate(new Date().toISOString()));
+    assert(!isDate({}));
+    assert(!isDate(null));
+    assert(!isDate(0));
   });
 });

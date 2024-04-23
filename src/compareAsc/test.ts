@@ -1,4 +1,7 @@
-import { describe, expect, it } from "vitest";
+/* eslint-env mocha */
+
+import assert from "node:assert";
+import { describe, it } from "vitest";
 import { compareAsc } from "./index.js";
 
 describe("compareAsc", () => {
@@ -7,7 +10,7 @@ describe("compareAsc", () => {
       new Date(1989, 6 /* Jul */, 10),
       new Date(1989, 6 /* Jul */, 10),
     );
-    expect(result).toBe(0);
+    assert(result === 0);
   });
 
   it("returns -1 if the first date is before the second one", () => {
@@ -15,7 +18,7 @@ describe("compareAsc", () => {
       new Date(1987, 1 /* Feb */, 11),
       new Date(1989, 6 /* Jul */, 10),
     );
-    expect(result).toBe(-1);
+    assert(result === -1);
   });
 
   it("returns 1 if the first date is after the second one", () => {
@@ -23,7 +26,7 @@ describe("compareAsc", () => {
       new Date(1989, 6 /* Jul */, 10),
       new Date(1987, 1 /* Feb */, 11),
     );
-    expect(result).toBe(1);
+    assert(result === 1);
   });
 
   it("sorts the dates array in the chronological order when function is passed as the argument to Array.prototype.sort()", () => {
@@ -42,7 +45,7 @@ describe("compareAsc", () => {
     unsortedArray.sort(compareAsc);
     const result = unsortedArray;
 
-    expect(result).toEqual(sortedArray);
+    assert.deepStrictEqual(result, sortedArray);
   });
 
   it("accepts timestamps", () => {
@@ -50,21 +53,21 @@ describe("compareAsc", () => {
       new Date(1987, 1 /* Feb */, 11).getTime(),
       new Date(1989, 6 /* Jul */, 10).getTime(),
     );
-    expect(result).toBe(-1);
+    assert(result === -1);
   });
 
   it("returns NaN if the first date is `Invalid Date`", () => {
     const result = compareAsc(new Date(NaN), new Date(1989, 6 /* Jul */, 10));
-    expect(isNaN(result)).toBe(true);
+    assert(isNaN(result));
   });
 
   it("returns NaN if the second date is `Invalid Date`", () => {
     const result = compareAsc(new Date(1989, 6 /* Jul */, 10), new Date(NaN));
-    expect(isNaN(result)).toBe(true);
+    assert(isNaN(result));
   });
 
   it("returns NaN if the both dates are `Invalid Date`", () => {
     const result = compareAsc(new Date(NaN), new Date(NaN));
-    expect(isNaN(result)).toBe(true);
+    assert(isNaN(result));
   });
 });

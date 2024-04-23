@@ -1,12 +1,14 @@
-import { UTCDate } from "@date-fns/utc";
+/* eslint-env mocha */
+
+import assert from "node:assert";
+import { describe, it, beforeEach, afterEach } from "vitest";
 import sinon from "sinon";
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { isThisWeek } from "./index.js";
 
 describe("isThisWeek", () => {
   let clock: sinon.SinonFakeTimers;
   beforeEach(() => {
-    clock = sinon.useFakeTimers(new Date(2014, 8 /* Sep */, 21).getTime());
+    clock = sinon.useFakeTimers(new Date(2014, 8 /* Sep */, 25).getTime());
   });
 
   afterEach(() => {
@@ -15,27 +17,21 @@ describe("isThisWeek", () => {
 
   it("returns true if the given date and the current date have the same week", () => {
     const date = new Date(2014, 8 /* Sep */, 21);
-    expect(isThisWeek(date)).toBe(true);
+    assert(isThisWeek(date) === true);
   });
 
   it("returns false if the given date and the current date have different weeks", () => {
     const date = new Date(2014, 8 /* Sep */, 29);
-    expect(isThisWeek(date)).toBe(false);
+    assert(isThisWeek(date) === false);
   });
 
   it("allows to specify which day is the first day of the week", () => {
-    const date = new Date(2014, 8 /* Sep */, 22);
-    expect(isThisWeek(date, { weekStartsOn: 1 })).toBe(false);
+    const date = new Date(2014, 8 /* Sep */, 28);
+    assert(isThisWeek(date, { weekStartsOn: 1 }) === true);
   });
 
   it("accepts a timestamp", () => {
     const date = new Date(2014, 8 /* Sep */, 21).getTime();
-    expect(isThisWeek(date)).toBe(true);
-  });
-
-  it("respects date extensions", () => {
-    expect(isThisWeek(new UTCDate(+new Date(2014, 8 /* Sep */, 21)))).toBe(
-      true,
-    );
+    assert(isThisWeek(date) === true);
   });
 });

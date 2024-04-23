@@ -1,20 +1,23 @@
+/* eslint-env mocha */
+
+import assert from "node:assert";
 import { describe, expect, it } from "vitest";
 import { quartersToYears } from "./index.js";
 
 describe("quartersToYears", () => {
   it("converts quarters to years", () => {
-    expect(quartersToYears(4)).toBe(1);
-    expect(quartersToYears(8)).toBe(2);
+    assert(quartersToYears(4) === 1);
+    assert(quartersToYears(8) === 2);
   });
 
   it("uses floor rounding", () => {
-    expect(quartersToYears(5)).toBe(1);
-    expect(quartersToYears(3)).toBe(0);
+    assert(quartersToYears(5) === 1);
+    assert(quartersToYears(3) === 0);
   });
 
   it("handles border values", () => {
-    expect(quartersToYears(4.5)).toBe(1);
-    expect(quartersToYears(0)).toBe(0);
+    assert(quartersToYears(4.5) === 1);
+    assert(quartersToYears(0) === 0);
   });
 
   it("properly works with negative numbers", () => {
